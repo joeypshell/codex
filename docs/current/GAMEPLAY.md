@@ -9,18 +9,22 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScript.
 
 - The player controls a firefly courier in a garden arena.
+- The game opens on a start screen with the goal and controls.
+- Press Enter, Space, or any movement key to start active play.
 - The goal is to deliver 5 glowing parcels before the night timer reaches 0.
+- The timer waits on the start screen and starts when active play begins.
 - The player can carry one parcel at a time.
 - Parcels spawn at safe positions away from the player and mailbox.
 - Delivering a parcel to the mailbox increments the delivery count and spawns the next parcel.
 - Hazards patrol the arena. Touching a hazard drops the carried parcel, spawns a replacement parcel, and subtracts time.
 - The game ends in a win after 5 deliveries or a loss when time reaches 0.
-- Press `R` after a win/loss to restart the round.
+- Press `R` after a win/loss to return to the start screen for another round.
 
 ## Controls
 
 - Move: WASD or arrow keys
-- Restart after win/loss: `R`
+- Start round: Enter, Space, or any movement key
+- Return to start screen after win/loss: `R`
 
 ## Scene Responsibilities
 
@@ -59,10 +63,12 @@ godot --headless --path . --export-release Web build/web/index.html
 
 Manual smoke:
 
+- Confirm the start screen shows the goal and controls.
+- Confirm the timer waits until the round starts.
 - Move in all directions.
 - Pick up a parcel.
 - Deliver it to the mailbox.
 - Touch a hazard while carrying a parcel and confirm the penalty.
 - Deliver 5 parcels and confirm the win state.
 - Let the timer expire and confirm the loss state.
-- Press `R` after an end state and confirm the round resets.
+- Press `R` after an end state and confirm the start screen returns.

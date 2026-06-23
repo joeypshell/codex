@@ -4,8 +4,9 @@ Firefly Courier is a tiny 2D cozy arcade game built in Godot 4.7 with GDScript. 
 
 ## Controls
 
+- Start round: Enter, Space, or any movement key
 - Move: WASD or arrow keys
-- Restart after win/lose: R
+- Return to start screen after win/lose: R
 
 ## How to Run
 

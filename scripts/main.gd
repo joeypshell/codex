@@ -1,6 +1,6 @@
 extends Node2D
 
-enum GameState { PLAYING, WON, LOST }
+enum GameState { READY, PLAYING, WON, LOST }
 
 const TARGET_DELIVERIES := 5
 const ROUND_TIME := 60.0
@@ -13,7 +13,7 @@ const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 
 var deliveries := 0
 var time_left := ROUND_TIME
-var state := GameState.PLAYING
+var state := GameState.READY
 var rng := RandomNumberGenerator.new()
 
 @onready var player = $Player
@@ -27,13 +27,18 @@ func _ready() -> void:
 	rng.randomize()
 	player.parcel_pickup.connect(_on_player_parcel_pickup)
 	mailbox.delivery_requested.connect(_on_mailbox_delivery_requested)
-	start_round()
+	show_start_screen()
 
 
 func _process(delta: float) -> void:
+	if state == GameState.READY:
+		if _start_pressed():
+			start_round()
+		return
+
 	if state != GameState.PLAYING:
 		if Input.is_action_just_pressed("restart"):
-			start_round()
+			show_start_screen()
 		return
 
 	time_left -= delta
@@ -54,6 +59,29 @@ func start_round() -> void:
 	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 	_spawn_hazards()
 	_spawn_parcel()
+
+
+func show_start_screen() -> void:
+	state = GameState.READY
+	deliveries = 0
+	time_left = ROUND_TIME
+	_clear_children(parcels)
+	_clear_children(hazards)
+	player.reset_for_round(PLAYER_START)
+	player.stop()
+	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	hud.show_message("Firefly Courier\nDeliver 5 parcels before dawn.\nMove with WASD or arrows.\nPress Enter, Space, or move to start.")
+
+
+func _start_pressed() -> bool:
+	var accept_pressed := InputMap.has_action("ui_accept") and Input.is_action_just_pressed("ui_accept")
+	return (
+		accept_pressed
+		or Input.is_action_just_pressed("move_left")
+		or Input.is_action_just_pressed("move_right")
+		or Input.is_action_just_pressed("move_up")
+		or Input.is_action_just_pressed("move_down")
+	)
 
 
 func _spawn_parcel() -> void:
