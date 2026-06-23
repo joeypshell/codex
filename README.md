@@ -34,6 +34,9 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 
 - `scenes/` contains Godot scene files.
 - `scripts/` contains GDScript behavior.
+- `docs/current/GAMEPLAY.md` describes the current implemented gameplay and verification expectations.
+- `docs/GITHUB_ISSUE_WORKFLOW.md` contains the lightweight issue template for future agent work.
+- `docs/AGENT_HANDOFF_TEMPLATE.md` contains the optional handoff template for larger tasks.
 - `export_presets.cfg` contains the tracked Godot web export preset.
 - `.github/workflows/verify.yml` keeps the existing GitHub workflow scaffold.
 - `.github/workflows/deploy-web.yml` exports and deploys the browser build.

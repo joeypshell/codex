@@ -2,132 +2,84 @@
 
 ## Project Posture
 
-This is an AI-assisted project. Treat this file as the living operating guide for Codex and other coding agents working in this repository.
+This is an AI-assisted Godot project. Treat this file as the living operating guide for Codex and other coding agents working in this repository.
 
-Keep guidance practical and compact. Add to this file when a workflow repeatedly helps, when a mistake recurs, or when debugging teaches a rule future agents should inherit. Prefer concrete commands, ownership boundaries, and verification steps over broad philosophy.
+Keep guidance practical and compact. Add rules only when they prevent repeated mistakes or preserve a workflow future agents need.
 
 ## Repository Shape
 
-This repository contains a small Godot 4.7 2D game project.
-
-- Source code: `scripts/`
+- Godot project config: `project.godot`
 - Scenes: `scenes/`
-- Documentation: `README.md` and this file
-- Runtime and deployment configuration: `project.godot`, `export_presets.cfg`, `.github/workflows/deploy-web.yml`
-- Generated artifacts that should not be committed: `.godot/`, `.import/`, `build/`, local editor files
-- Common project commands: open `project.godot` in Godot 4.7 and press Play; web exports use the `Web` preset
+- GDScript source: `scripts/`
+- Web export preset: `export_presets.cfg`
+- GitHub Actions: `.github/workflows/`
+- Current-state gameplay docs: `docs/current/`
+- Agent workflow docs: `docs/GITHUB_ISSUE_WORKFLOW.md`, `docs/AGENT_HANDOFF_TEMPLATE.md`
+- Generated files not to commit: `.godot/`, `build/`, local editor/cache files
 
-When docs disagree, current-state docs and active GitHub issues are the source of truth for implemented behavior. Planning, roadmap, tracking, and archive docs are historical context unless an active issue says otherwise.
+## Source-of-Truth Rules
+
+- `docs/current/` describes implemented behavior.
+- Planning docs are proposals until accepted and reflected in current docs or GitHub issues.
+- GitHub issues are the active task contract once work is ticketed.
+- If gameplay, runtime, export behavior, input, or project workflow changes, update the matching current doc before closing the issue.
 
 ## Development Workflow
 
-- Prefer existing repository patterns over new abstractions.
-- Use `rg` / `rg --files` for search.
-- Use focused edits and keep unrelated refactors out of task branches.
+- Read the issue, linked docs, and nearby scene/script files before editing.
+- Prefer existing scene/script patterns over new abstractions.
+- Keep changes scoped to the issue.
+- If new work appears, create or request a follow-up issue instead of expanding the ticket.
 - Do not revert unrelated user changes.
-- Keep generated, local, or machine-specific files out of commits unless explicitly requested.
-- Capture durable decisions in docs when implementation changes architecture, APIs, runtime behavior, or project workflow.
-
-## Feature Planning Workflow
-
-For broad new features or redesigns, do discovery before implementation:
-
-- Capture product direction, constraints, and open questions in a planning doc under `docs/`.
-- Audit current code and current-state docs before decomposing work.
-- Convert the plan into GitHub-ready tickets with acceptance criteria, implementation notes, blockers, related work, and verification steps.
-- Use GitHub Issues for execution tracking, ownership, status, discussion, and PR linkage.
-- Once a GitHub issue exists for the work, treat the issue as the active task contract.
-- Prefer small tickets that one agent can complete and verify.
-- Split design/schema decisions from implementation when the implementation depends on unresolved architecture.
+- Do not commit generated `.godot/` or `build/` output.
 
 ## GitHub Issue Workflow
 
-Use GitHub Issues as the execution backlog for meaningful project work.
+Use GitHub issues for meaningful feature, bug, workflow, and demo work.
 
-Create or select an issue before starting:
+Issues should include:
 
-- new product features or user stories
-- bug fixes with user-visible behavior
-- architecture, schema, service-boundary, protocol, or data-model changes
-- tech debt cleanup that changes maintainability risk
-- documentation work meant to shape project presentation or onboarding
-
-Do not require a new issue for:
-
-- typos, tiny formatting edits, or one-line cleanup
-- local experiments that are not committed
-- small follow-up edits already covered by the active issue
-
-Issue contents should be useful to a future agent:
-
-- user story or problem statement
+- summary or user story
 - acceptance criteria
 - relevant docs and code areas
-- dependencies, blockers, and related issues
-- implementation checklist when the work is non-trivial
-- verification commands expected before close
+- dependencies or blockers
+- implementation notes
+- verification steps
 
-During work:
+Record durable decisions, blockers, commit hashes, and verification results in issue comments.
 
-- Read the issue and linked docs before editing.
-- Add issue comments only for durable information: design decisions, scope changes, blockers, important discoveries, commit hashes, and verification results.
-- If new work appears, prefer creating a linked follow-up issue instead of expanding the current ticket until it becomes vague.
-- Keep Markdown docs for product vision, architecture rationale, and durable decisions; keep GitHub Issues for execution status, discussion, and history.
+## Feature Planning Workflow
 
-Recommended GitHub CLI commands when available:
+For broad features, write a compact plan under `docs/planning/` before implementation. Split the plan into small issues that one agent can complete and verify. Use a `codex/<feature>-dev` integration branch only when multiple issues must be reviewed together before merging to `main`.
 
-```powershell
-gh issue list --limit 30
-gh issue view <number> --comments
-gh issue comment <number> --body "..."
-gh issue close <number> --comment "Completed in <commit>. Verified with <command>."
-```
+## Verification Commands
 
-## Feature Integration Branch Workflow
-
-For broad multi-ticket features or redesigns, use a feature integration branch instead of merging partial work directly into `main`.
-
-- Name feature integration branches with the `codex/` prefix, for example `codex/search-redesign-dev`.
-- Agents may complete individual GitHub issues on the integration branch or on smaller task branches that merge into the integration branch.
-- Close a GitHub issue when its work has landed in the feature integration branch and verification has been recorded.
-- Keep `main` stable.
-- Before merging an integration branch into `main`, a human should review the feature end to end, run the agreed verification, and confirm current-state docs are accurate.
-- The final PR from the integration branch to `main` should reference completed issues with `Refs #123` or `Closes #123` as appropriate.
-
-## Verification
-
-Favor deterministic checks before manual exploration.
-
-Use the strongest available repo command:
+Preferred checks when Godot is available:
 
 ```powershell
-task verify
+godot --headless --path . --scene res://scenes/Main.tscn --quit-after 5
+godot --headless --path . --export-release Web build/web/index.html
 ```
 
-If no project-level verification command exists yet, use the checks that match the repository:
+Manual checks:
+
+- Open `project.godot` in Godot 4.7 and press Play.
+- Verify the web build through GitHub Pages after deployment.
+
+Documentation-only checks:
 
 ```powershell
-go test ./...
-npm test
-npm run build
-pnpm test
-pnpm build
-python -m pytest
-cargo test
-dotnet test
+git diff --check
+git status --short
 ```
-
-Record the exact commands run in issue comments, PR descriptions, and final handoff notes.
 
 ## Commit Hygiene
 
-- Check `git status --short` before staging and before final response.
-- Stage files explicitly. Avoid `git add .` unless the task truly includes every changed file.
-- Reference relevant issues in commit messages when practical.
-- PR descriptions should reference issues with `Closes #123` for completed work or `Refs #123` for partial or related work.
-- PR descriptions should include verification commands run.
-- Do not stage generated artifacts unless the repository explicitly tracks them.
+- Run `git status --short` before staging and before final response.
+- Stage files explicitly.
+- Do not commit `.godot/` or `build/`.
+- PR descriptions should reference issues and include verification commands.
 
-## Learning Loop
+## Agent Learning Loop
 
-When a bug takes real effort to understand, or a successful workflow would be useful next time, propose an `AGENTS.md` update. Keep each addition short enough that future agents will actually read it.
+When a bug or workflow takes real effort to understand, propose a short `AGENTS.md` update. Keep it specific enough that future agents will actually read it.
