@@ -5,6 +5,8 @@ enum GameState { READY, PLAYING, WON, LOST }
 const TARGET_DELIVERIES := 5
 const ROUND_TIME := 60.0
 const HAZARD_PENALTY := 6.0
+const HAZARD_TOUCH_DISTANCE := 34.0
+const HAZARD_HIT_COOLDOWN := 1.0
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 
@@ -14,6 +16,7 @@ const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 var deliveries := 0
 var time_left := ROUND_TIME
 var state := GameState.READY
+var hazard_hit_cooldown := 0.0
 var rng := RandomNumberGenerator.new()
 
 @onready var player = $Player
@@ -42,6 +45,8 @@ func _process(delta: float) -> void:
 		return
 
 	time_left -= delta
+	hazard_hit_cooldown = max(0.0, hazard_hit_cooldown - delta)
+	_check_hazard_overlap()
 	if time_left <= 0.0:
 		end_round(false)
 	else:
@@ -52,6 +57,7 @@ func start_round() -> void:
 	state = GameState.PLAYING
 	deliveries = 0
 	time_left = ROUND_TIME
+	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
@@ -65,6 +71,7 @@ func show_start_screen() -> void:
 	state = GameState.READY
 	deliveries = 0
 	time_left = ROUND_TIME
+	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
@@ -146,6 +153,24 @@ func _on_hazard_body_entered(body: Node2D) -> void:
 	if state != GameState.PLAYING or body != player:
 		return
 
+	_apply_hazard_penalty()
+
+
+func _check_hazard_overlap() -> void:
+	if hazard_hit_cooldown > 0.0:
+		return
+
+	for hazard in hazards.get_children():
+		if hazard is Node2D and player.global_position.distance_to(hazard.global_position) <= HAZARD_TOUCH_DISTANCE:
+			_apply_hazard_penalty()
+			return
+
+
+func _apply_hazard_penalty() -> void:
+	if hazard_hit_cooldown > 0.0:
+		return
+
+	hazard_hit_cooldown = HAZARD_HIT_COOLDOWN
 	time_left = max(0.0, time_left - HAZARD_PENALTY)
 	if player.carrying_parcel:
 		player.update_carrying(false)
