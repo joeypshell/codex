@@ -15,6 +15,13 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  GODOT_RELEASE: "4.7-stable"
+  GODOT_TEMPLATE_DIR: "4.7.stable"
+  GODOT_LINUX_ZIP: "Godot_v4.7-stable_linux.x86_64.zip"
+  GODOT_LINUX_BIN: "Godot_v4.7-stable_linux.x86_64"
+  GODOT_TEMPLATES: "Godot_v4.7-stable_export_templates.tpz"
+
 jobs:
   export:
     name: Export Godot web build
@@ -25,21 +32,29 @@ jobs:
 
       - name: Download Godot
         run: |
-          curl -L -o godot.zip https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
-          unzip godot.zip -d godot
-          chmod +x godot/Godot_v4.7-stable_linux.x86_64
+          curl -L \
+            -o godot.zip \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/${GODOT_LINUX_ZIP}"
+          unzip -q godot.zip -d godot
+          chmod +x "godot/${GODOT_LINUX_BIN}"
 
       - name: Install export templates
         run: |
-          curl -L -o templates.tpz https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_export_templates.tpz
-          mkdir -p "$HOME/.local/share/godot/export_templates/4.7.stable"
+          curl -L \
+            -o templates.tpz \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/${GODOT_TEMPLATES}"
+          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_DIR}"
           unzip -q templates.tpz -d templates
-          cp templates/templates/* "$HOME/.local/share/godot/export_templates/4.7.stable/"
+          cp templates/templates/* "$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_DIR}/"
 
       - name: Export web build
         run: |
           mkdir -p build/web
-          godot/Godot_v4.7-stable_linux.x86_64 --headless --path . --export-release Web build/web/index.html
+          "godot/${GODOT_LINUX_BIN}" \
+            --headless \
+            --path . \
+            --export-release Web \
+            build/web/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

@@ -2,6 +2,8 @@
 
 This file describes the implemented Firefly Courier behavior. If gameplay, controls, runtime, or web export behavior changes, update this file before closing the related issue.
 
+Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
+
 ## Game Loop
 
 Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScript.

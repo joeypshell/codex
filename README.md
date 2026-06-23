@@ -35,6 +35,7 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 - `scenes/` contains Godot scene files.
 - `scripts/` contains GDScript behavior.
 - `docs/current/GAMEPLAY.md` describes the current implemented gameplay and verification expectations.
+- `docs/current/ROADMAP.md` describes the near-term issue-driven roadmap.
 - `docs/BACKLOG.md` links the first GitHub issue backlog.
 - `docs/GITHUB_ISSUE_WORKFLOW.md` contains the lightweight issue template for future agent work.
 - `docs/AGENT_HANDOFF_TEMPLATE.md` contains the optional handoff template for larger tasks.
