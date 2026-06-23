@@ -1,0 +1,82 @@
+[gd_scene load_steps=11 format=3 uid="uid://fireflycouriermain"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/Parcel.tscn" id="3_parcel"]
+[ext_resource type="PackedScene" path="res://scenes/Hazard.tscn" id="4_hazard"]
+[ext_resource type="PackedScene" path="res://scenes/Mailbox.tscn" id="5_mailbox"]
+[ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="6_hud"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(960, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_side"]
+size = Vector2(24, 540)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(960, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(24, 540)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+parcel_scene = ExtResource("3_parcel")
+hazard_scene = ExtResource("4_hazard")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.075, 0.11, 0.17, 1)
+
+[node name="Garden" type="Node2D" parent="."]
+
+[node name="Ground" type="ColorRect" parent="Garden"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 936.0
+offset_bottom = 516.0
+color = Color(0.09, 0.23, 0.16, 1)
+
+[node name="Path" type="ColorRect" parent="Garden"]
+offset_left = 410.0
+offset_top = 24.0
+offset_right = 550.0
+offset_bottom = 516.0
+color = Color(0.16, 0.22, 0.18, 1)
+
+[node name="TopWall" type="StaticBody2D" parent="Garden"]
+position = Vector2(480, 12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Garden/TopWall"]
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="StaticBody2D" parent="Garden"]
+position = Vector2(480, 528)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Garden/BottomWall"]
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="StaticBody2D" parent="Garden"]
+position = Vector2(12, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Garden/LeftWall"]
+shape = SubResource("RectangleShape2D_side")
+
+[node name="RightWall" type="StaticBody2D" parent="Garden"]
+position = Vector2(948, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Garden/RightWall"]
+shape = SubResource("RectangleShape2D_right")
+
+[node name="Mailbox" parent="." instance=ExtResource("5_mailbox")]
+position = Vector2(858, 438)
+
+[node name="Parcels" type="Node2D" parent="."]
+
+[node name="Hazards" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(110, 438)
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]

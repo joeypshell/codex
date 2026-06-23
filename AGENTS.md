@@ -8,14 +8,14 @@ Keep guidance practical and compact. Add to this file when a workflow repeatedly
 
 ## Repository Shape
 
-Update this section as the repository grows:
+This repository contains a small Godot 4.7 2D game project.
 
-- Source code:
-- Tests:
-- Documentation:
-- Runtime and deployment configuration:
-- Generated artifacts that should not be committed:
-- Common project commands:
+- Source code: `scripts/`
+- Scenes: `scenes/`
+- Documentation: `README.md` and this file
+- Runtime and deployment configuration: `project.godot`
+- Generated artifacts that should not be committed: `.godot/`, `.import/`, export presets, local editor files
+- Common project commands: open `project.godot` in Godot 4.7 and press Play
 
 When docs disagree, current-state docs and active GitHub issues are the source of truth for implemented behavior. Planning, roadmap, tracking, and archive docs are historical context unless an active issue says otherwise.
 
