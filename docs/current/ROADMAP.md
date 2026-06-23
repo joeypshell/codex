@@ -23,13 +23,22 @@ The first version is "done enough" when:
 - Future agents can run one documented verification path before reporting completion.
 - `docs/current/GAMEPLAY.md` matches the accepted playable behavior.
 
+## Near-Term Epics
+
+- [#6 V1 playable browser polish](https://github.com/joeypshell/codex/issues/6)
+  Finish the current web-playable game before adding new systems.
+- [#7 Repeatable Godot verification workflow](https://github.com/joeypshell/codex/issues/7)
+  Add one documented verification path for scene-load and web-export checks.
+- [#8 First post-V1 gameplay expansion](https://github.com/joeypshell/codex/issues/8)
+  Plan one small gameplay expansion after V1 is complete.
+
 ## Near-Term Issue Order
 
-1. Verify the public GitHub Pages build is live and playable.
-2. Add a start screen with concise goal and control instructions.
-3. Add small feedback cues for pickup, delivery, hazard contact, and end states.
-4. Add a repeatable local verification command for scene-load and web-export checks.
-5. Plan one gameplay expansion slice after the current game feels complete.
+1. [#1 Verify the public GitHub Pages build is live and playable.](https://github.com/joeypshell/codex/issues/1)
+2. [#3 Add a start screen with concise goal and control instructions.](https://github.com/joeypshell/codex/issues/3)
+3. [#2 Add small feedback cues for pickup, delivery, hazard contact, and end states.](https://github.com/joeypshell/codex/issues/2)
+4. [#4 Add a repeatable local verification command for scene-load and web-export checks.](https://github.com/joeypshell/codex/issues/4)
+5. [#5 Plan one gameplay expansion slice after the current game feels complete.](https://github.com/joeypshell/codex/issues/5)
 
 ## Out Of Scope For Now
 
@@ -50,7 +59,7 @@ The first version is "done enough" when:
 
 ## Suggested First Issues
 
-### 1. Verify GitHub Pages Web Deployment
+### [#1 Verify GitHub Pages Web Deployment](https://github.com/joeypshell/codex/issues/1)
 
 Acceptance criteria:
 
@@ -65,7 +74,7 @@ Verification:
 - Open the public Pages URL.
 - Manual smoke: move, collect a parcel, deliver it, and restart after an end state.
 
-### 2. Add Start Screen And Concise Instructions
+### [#3 Add Start Screen And Concise Instructions](https://github.com/joeypshell/codex/issues/3)
 
 Acceptance criteria:
 
@@ -79,7 +88,7 @@ Verification:
 - Confirm the timer waits on the start screen.
 - Confirm active play and restart behavior still work.
 
-### 3. Add Basic Game-Feel Feedback
+### [#2 Add Basic Game-Feel Feedback](https://github.com/joeypshell/codex/issues/2)
 
 Acceptance criteria:
 
