@@ -14,6 +14,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - Web export preset: `export_presets.cfg`
 - GitHub Actions: `.github/workflows/`
 - Current-state gameplay docs: `docs/current/`
+- Backlog snapshot: `docs/BACKLOG.md`; live task state stays in GitHub Issues
 - Agent workflow docs: `docs/GITHUB_ISSUE_WORKFLOW.md`, `docs/AGENT_HANDOFF_TEMPLATE.md`
 - Generated files not to commit: `.godot/`, `build/`, local editor/cache files
 
