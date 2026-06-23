@@ -13,9 +13,9 @@ This repository contains a small Godot 4.7 2D game project.
 - Source code: `scripts/`
 - Scenes: `scenes/`
 - Documentation: `README.md` and this file
-- Runtime and deployment configuration: `project.godot`
-- Generated artifacts that should not be committed: `.godot/`, `.import/`, export presets, local editor files
-- Common project commands: open `project.godot` in Godot 4.7 and press Play
+- Runtime and deployment configuration: `project.godot`, `export_presets.cfg`, `.github/workflows/deploy-web.yml`
+- Generated artifacts that should not be committed: `.godot/`, `.import/`, `build/`, local editor files
+- Common project commands: open `project.godot` in Godot 4.7 and press Play; web exports use the `Web` preset
 
 When docs disagree, current-state docs and active GitHub issues are the source of truth for implemented behavior. Planning, roadmap, tracking, and archive docs are historical context unless an active issue says otherwise.
 
