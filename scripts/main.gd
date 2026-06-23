@@ -7,6 +7,9 @@ const ROUND_TIME := 60.0
 const HAZARD_PENALTY := 6.0
 const HAZARD_TOUCH_DISTANCE := 34.0
 const HAZARD_HIT_COOLDOWN := 1.0
+const PICKUP_EVENT_COLOR := Color(0.62, 0.95, 1.0)
+const DELIVERY_EVENT_COLOR := Color(1.0, 0.92, 0.35)
+const HAZARD_EVENT_COLOR := Color(1.0, 0.36, 0.36)
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 
@@ -133,6 +136,7 @@ func _on_player_parcel_pickup(parcel: Area2D) -> void:
 	if parcel.has_method("collect"):
 		parcel.collect()
 	player.update_carrying(true)
+	hud.show_event("Parcel picked up", PICKUP_EVENT_COLOR)
 	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 
 
@@ -142,6 +146,7 @@ func _on_mailbox_delivery_requested() -> void:
 
 	deliveries += 1
 	player.update_carrying(false)
+	hud.show_event("Delivered! %d to go" % max(0, TARGET_DELIVERIES - deliveries), DELIVERY_EVENT_COLOR)
 	if deliveries >= TARGET_DELIVERIES:
 		end_round(true)
 	else:
@@ -172,6 +177,7 @@ func _apply_hazard_penalty() -> void:
 
 	hazard_hit_cooldown = HAZARD_HIT_COOLDOWN
 	time_left = max(0.0, time_left - HAZARD_PENALTY)
+	hud.show_event("Hazard hit! -%d seconds" % int(HAZARD_PENALTY), HAZARD_EVENT_COLOR)
 	if player.carrying_parcel:
 		player.update_carrying(false)
 		_spawn_parcel()
