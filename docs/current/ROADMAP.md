@@ -2,6 +2,8 @@
 
 This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remain the active task contract; this file explains what should be tackled next and what should stay out of scope for now.
 
+Current direction: finish and polish the current one-screen browser game before expanding it.
+
 ## Current Playable State
 
 - Firefly Courier is a one-screen Godot 4.7 arcade game.
@@ -11,16 +13,27 @@ This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remai
 - The game has win, loss, and restart states.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
 
-## Near-Term Candidate Issues
+## V1 Finish Line
 
-- Verify the public GitHub Pages build is live and playable.
-- Add a start screen with concise goal and control instructions.
-- Add small feedback cues for pickup, delivery, hazard contact, and end states.
-- Add a repeatable local verification command for scene-load and web-export checks.
-- Plan the first gameplay expansion before adding new systems.
+The first version is "done enough" when:
+
+- The public GitHub Pages build is live and playable.
+- A first-time player can understand the goal and controls without reading the README.
+- Pickup, delivery, hazard contact, win, loss, and restart all have clear feedback.
+- Future agents can run one documented verification path before reporting completion.
+- `docs/current/GAMEPLAY.md` matches the accepted playable behavior.
+
+## Near-Term Issue Order
+
+1. Verify the public GitHub Pages build is live and playable.
+2. Add a start screen with concise goal and control instructions.
+3. Add small feedback cues for pickup, delivery, hazard contact, and end states.
+4. Add a repeatable local verification command for scene-load and web-export checks.
+5. Plan one gameplay expansion slice after the current game feels complete.
 
 ## Out Of Scope For Now
 
+- New gameplay systems before the V1 finish line above is met.
 - Save data, accounts, shops, currencies, or progression systems.
 - Large custom art or audio asset production.
 - Mobile/touch controls.
@@ -80,3 +93,12 @@ Verification:
 - Run the main scene in Godot.
 - Manual smoke: pickup, delivery, hazard contact, win, loss, restart.
 - Update `docs/current/GAMEPLAY.md` if accepted visible behavior changes.
+
+## After V1
+
+Once the finish line is met, plan exactly one expansion slice. Good candidates:
+
+- A second arena with one new layout constraint.
+- A new parcel type with a simple delivery rule.
+- A gentle score/combo system that rewards clean deliveries.
+- A new hazard pattern that reuses the existing hazard scene/script shape.
