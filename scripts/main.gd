@@ -12,6 +12,7 @@ const DELIVERY_EVENT_COLOR := Color(1.0, 0.92, 0.35)
 const HAZARD_EVENT_COLOR := Color(1.0, 0.36, 0.36)
 const PARCEL_TYPE_NORMAL := "normal"
 const PARCEL_TYPE_FRAGILE := "fragile"
+const FIRST_FRAGILE_DELIVERY := 1
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 
@@ -69,7 +70,7 @@ func start_round() -> void:
 	hud.clear_message()
 	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 	_spawn_hazards()
-	_spawn_parcel()
+	_spawn_next_parcel()
 
 
 func show_start_screen() -> void:
@@ -104,6 +105,16 @@ func _spawn_parcel(parcel_type := PARCEL_TYPE_NORMAL) -> void:
 	if parcel.has_method("set_parcel_type"):
 		parcel.call("set_parcel_type", parcel_type)
 	parcel.global_position = _random_safe_position()
+
+
+func _spawn_next_parcel() -> void:
+	_spawn_parcel(_next_parcel_type())
+
+
+func _next_parcel_type() -> String:
+	if deliveries < FIRST_FRAGILE_DELIVERY:
+		return PARCEL_TYPE_NORMAL
+	return PARCEL_TYPE_FRAGILE if deliveries % 2 == 1 else PARCEL_TYPE_NORMAL
 
 
 func _spawn_hazards() -> void:
@@ -158,7 +169,7 @@ func _on_mailbox_delivery_requested() -> void:
 	if deliveries >= TARGET_DELIVERIES:
 		end_round(true)
 	else:
-		_spawn_parcel()
+		_spawn_next_parcel()
 		hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 
 
@@ -188,7 +199,7 @@ func _apply_hazard_penalty() -> void:
 	hud.show_event("Hazard hit! -%d seconds" % int(HAZARD_PENALTY), HAZARD_EVENT_COLOR)
 	if player.carrying_parcel:
 		player.update_carrying(false)
-		_spawn_parcel()
+		_spawn_next_parcel()
 	if time_left <= 0.0:
 		end_round(false)
 	else:
