@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+@onready var floor_label: Label = $Root/FloorLabel
 @onready var score_label: Label = $Root/ScoreLabel
 @onready var timer_label: Label = $Root/TimerLabel
 @onready var carry_label: Label = $Root/CarryLabel
@@ -18,7 +19,8 @@ func _process(delta: float) -> void:
 	event_label.modulate.a = min(1.0, event_time_left * 2.0)
 
 
-func update_status(deliveries: int, target_deliveries: int, time_left: float, carrying: bool) -> void:
+func update_status(floor_number: int, deliveries: int, target_deliveries: int, time_left: float, carrying: bool) -> void:
+	floor_label.text = "Floor: %d" % floor_number
 	score_label.text = "Deliveries: %d / %d" % [deliveries, target_deliveries]
 	timer_label.text = "Night: %02d" % max(0, ceili(time_left))
 	carry_label.text = "Parcel: %s" % ("carried" if carrying else "none")

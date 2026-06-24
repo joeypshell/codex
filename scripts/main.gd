@@ -1,9 +1,17 @@
 extends Node2D
 
-enum GameState { READY, PLAYING, WON, LOST }
+enum GameState { READY, PLAYING, FLOOR_CLEAR, LOST }
 
 const TARGET_DELIVERIES := 5
-const ROUND_TIME := 60.0
+const BASE_FLOOR_TIME := 60.0
+const MIN_FLOOR_TIME := 35.0
+const FLOOR_TIME_STEP := 2.0
+const BASE_HAZARD_COUNT := 3
+const MAX_HAZARD_COUNT := 6
+const HAZARD_COUNT_FLOOR_INTERVAL := 3
+const BASE_HAZARD_SPEED_MULTIPLIER := 1.0
+const MAX_HAZARD_SPEED_MULTIPLIER := 1.8
+const HAZARD_SPEED_PER_FLOOR := 0.08
 const HAZARD_PENALTY := 6.0
 const FRAGILE_HAZARD_PENALTY := 12.0
 const HAZARD_TOUCH_DISTANCE := 34.0
@@ -22,7 +30,8 @@ const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 @export var hazard_scene: PackedScene
 
 var deliveries := 0
-var time_left := ROUND_TIME
+var floor_number := 1
+var time_left := BASE_FLOOR_TIME
 var state := GameState.READY
 var hazard_hit_cooldown := 0.0
 var rng := RandomNumberGenerator.new()
@@ -44,10 +53,17 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if state == GameState.READY:
 		if _start_pressed():
-			start_round()
+			start_run()
 		return
 
-	if state != GameState.PLAYING:
+	if state == GameState.FLOOR_CLEAR:
+		if _start_pressed():
+			advance_floor()
+		elif Input.is_action_just_pressed("restart"):
+			show_start_screen()
+		return
+
+	if state == GameState.LOST:
 		if Input.is_action_just_pressed("restart"):
 			show_start_screen()
 		return
@@ -56,36 +72,47 @@ func _process(delta: float) -> void:
 	hazard_hit_cooldown = max(0.0, hazard_hit_cooldown - delta)
 	_check_hazard_overlap()
 	if time_left <= 0.0:
-		end_round(false)
+		end_run()
 	else:
-		hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+		hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 
 
-func start_round() -> void:
+func start_run() -> void:
+	floor_number = 1
+	start_floor()
+
+
+func advance_floor() -> void:
+	floor_number += 1
+	start_floor()
+
+
+func start_floor() -> void:
 	state = GameState.PLAYING
 	deliveries = 0
-	time_left = ROUND_TIME
+	time_left = _floor_time()
 	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
 	hud.clear_message()
-	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 	_spawn_hazards()
 	_spawn_next_parcel()
 
 
 func show_start_screen() -> void:
 	state = GameState.READY
+	floor_number = 1
 	deliveries = 0
-	time_left = ROUND_TIME
+	time_left = _floor_time()
 	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
 	player.stop()
-	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
-	hud.show_message("Firefly Courier\nDeliver 5 parcels before dawn.\nMove with WASD or arrows.\nPress Enter, Space, or move to start.")
+	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	hud.show_message("Firefly Courier\nDeliver 5 parcels to clear each floor.\nMove with WASD or arrows.\nPress Enter, Space, or move to start.")
 
 
 func _start_pressed() -> bool:
@@ -124,16 +151,35 @@ func _spawn_hazards() -> void:
 		{"position": Vector2(300, 150), "direction": Vector2.RIGHT, "speed": 68.0, "travel": 150.0},
 		{"position": Vector2(640, 220), "direction": Vector2.DOWN, "speed": 58.0, "travel": 130.0},
 		{"position": Vector2(420, 380), "direction": Vector2.LEFT, "speed": 76.0, "travel": 180.0},
+		{"position": Vector2(210, 310), "direction": Vector2.DOWN, "speed": 64.0, "travel": 120.0},
+		{"position": Vector2(740, 360), "direction": Vector2.LEFT, "speed": 70.0, "travel": 150.0},
+		{"position": Vector2(520, 110), "direction": Vector2.RIGHT, "speed": 62.0, "travel": 130.0},
 	]
+	var hazard_count: int = mini(_hazard_count(), hazard_data.size())
+	var speed_multiplier := _hazard_speed_multiplier()
 
-	for data in hazard_data:
+	for index in range(hazard_count):
+		var data: Dictionary = hazard_data[index]
 		var hazard := hazard_scene.instantiate()
 		hazards.add_child(hazard)
-		hazard.global_position = data["position"]
-		hazard.direction = data["direction"]
-		hazard.speed = data["speed"]
-		hazard.travel_distance = data["travel"]
+		hazard.global_position = data["position"] as Vector2
+		hazard.direction = data["direction"] as Vector2
+		hazard.speed = float(data["speed"]) * speed_multiplier
+		hazard.travel_distance = float(data["travel"])
 		hazard.body_entered.connect(_on_hazard_body_entered)
+
+
+func _floor_time() -> float:
+	return max(MIN_FLOOR_TIME, BASE_FLOOR_TIME - (floor_number * FLOOR_TIME_STEP))
+
+
+func _hazard_count() -> int:
+	var floor_bonus := floori(float(floor_number) / float(HAZARD_COUNT_FLOOR_INTERVAL))
+	return min(MAX_HAZARD_COUNT, BASE_HAZARD_COUNT + floor_bonus)
+
+
+func _hazard_speed_multiplier() -> float:
+	return min(MAX_HAZARD_SPEED_MULTIPLIER, BASE_HAZARD_SPEED_MULTIPLIER + (floor_number * HAZARD_SPEED_PER_FLOOR))
 
 
 func _random_safe_position() -> Vector2:
@@ -158,7 +204,7 @@ func _on_player_parcel_pickup(parcel: Area2D) -> void:
 	player.update_carrying(true, parcel_type)
 	var event_text := "Fragile parcel picked up" if parcel_type == PARCEL_TYPE_FRAGILE else "Parcel picked up"
 	hud.show_event(event_text, PICKUP_EVENT_COLOR)
-	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 
 
 func _on_mailbox_delivery_requested() -> void:
@@ -169,10 +215,10 @@ func _on_mailbox_delivery_requested() -> void:
 	player.update_carrying(false)
 	hud.show_event("Delivered! %d to go" % max(0, TARGET_DELIVERIES - deliveries), DELIVERY_EVENT_COLOR)
 	if deliveries >= TARGET_DELIVERIES:
-		end_round(true)
+		clear_floor()
 	else:
 		_spawn_next_parcel()
-		hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+		hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 
 
 func _on_hazard_body_entered(body: Node2D) -> void:
@@ -208,19 +254,25 @@ func _apply_hazard_penalty() -> void:
 	time_left = max(0.0, time_left - penalty)
 	hud.show_event(event_text, HAZARD_EVENT_COLOR)
 	if time_left <= 0.0:
-		end_round(false)
+		end_run()
 	else:
-		hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+		hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 
 
-func end_round(won: bool) -> void:
-	state = GameState.WON if won else GameState.LOST
+func clear_floor() -> void:
+	state = GameState.FLOOR_CLEAR
 	player.stop()
-	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
-	if won:
-		hud.show_message("All parcels delivered!\nPress R to start another night.")
-	else:
-		hud.show_message("The night ended.\nPress R to try again.")
+	_clear_children(parcels)
+	_clear_children(hazards)
+	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	hud.show_message("Floor %d clear!\nPress Enter or Space for Floor %d." % [floor_number, floor_number + 1])
+
+
+func end_run() -> void:
+	state = GameState.LOST
+	player.stop()
+	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	hud.show_message("Run ended on Floor %d.\nPress R to start a fresh run." % floor_number)
 
 
 func _clear_children(node: Node) -> void:

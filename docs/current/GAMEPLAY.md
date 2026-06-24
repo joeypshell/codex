@@ -11,8 +11,10 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - The player controls a firefly courier in a garden arena.
 - The game opens on a start screen with the goal and controls.
 - Press Enter, Space, or any movement key to start active play.
-- The goal is to deliver 5 glowing parcels before the night timer reaches 0.
+- The run starts on Floor 1.
+- Each floor requires 5 glowing parcel deliveries before the night timer reaches 0.
 - The timer waits on the start screen and starts when active play begins.
+- The HUD shows the current floor, deliveries, timer, and carried parcel state.
 - The player can carry one parcel at a time.
 - Parcels spawn at safe positions away from the player and mailbox.
 - The first parcel in a round is normal; after that, fragile parcels appear every other delivery, so a five-delivery win path has two fragile parcels.
@@ -21,27 +23,39 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Delivering a parcel to the mailbox increments the delivery count and spawns the next parcel.
 - Delivering a parcel shows a short HUD cue.
 - Hazards patrol the arena. Touching a hazard drops the carried parcel, spawns a replacement parcel, subtracts 6 seconds for a normal parcel or 12 seconds for a fragile parcel, and shows a short warning cue. This is the accepted first-pass tuning: fragile parcels are noticeable but not constant, and the stronger penalty is meaningful without ending a full round by itself.
-- The game ends in a win after 5 deliveries or a loss when time reaches 0.
-- Press `R` after a win/loss to return to the start screen for another round.
+- Completing 5 deliveries clears the current floor instead of ending the run.
+- Press Enter or Space from the floor-clear screen to advance to the next floor.
+- There is no final floor or final win state.
+- The run ends only when time reaches 0.
+- Press `R` after a run ends to return to the start screen for a fresh Floor 1 run.
+
+## Floor Scaling
+
+- Floor timer: `max(35, 60 - floor_number * 2)` seconds.
+- Hazard count: `min(6, 3 + floor_number / 3)` using whole-floor steps.
+- Hazard speed multiplier: `min(1.8, 1.0 + floor_number * 0.08)`.
+- Deliveries required stays fixed at 5.
+- Hazard penalty rules stay the same across floors.
 
 ## Controls
 
 - Move: WASD or arrow keys
-- Start round: Enter, Space, or any movement key
-- Return to start screen after win/loss: `R`
+- Start run: Enter, Space, or any movement key
+- Advance after floor clear: Enter or Space
+- Return to start screen after run over: `R`
 
 ## Scene Responsibilities
 
-- `scenes/Main.tscn`: arena, round state, spawning, score, timer, win/loss flow
+- `scenes/Main.tscn`: arena, run/floor state, spawning, score, timer, floor-clear/loss flow
 - `scenes/Player.tscn`: player movement, collision, pickup area, carried-parcel indicator
 - `scenes/Parcel.tscn`: collectible parcel
 - `scenes/Hazard.tscn`: moving hazard
 - `scenes/Mailbox.tscn`: delivery target
-- `scenes/HUD.tscn`: score, timer, carried state, win/loss messages
+- `scenes/HUD.tscn`: floor, score, timer, carried state, floor-clear/loss messages
 
 ## Script Responsibilities
 
-- `scripts/main.gd`: round lifecycle, spawn rules, win/loss rules, hazard penalties
+- `scripts/main.gd`: run and floor lifecycle, spawn rules, difficulty scaling, hazard penalties
 - `scripts/player.gd`: input, movement, carrying state, parcel pickup signal
 - `scripts/parcel.gd`: collectible state and cleanup
 - `scripts/hazard.gd`: patrol motion
@@ -69,11 +83,13 @@ Use `.\tools\verify-godot.ps1 -GodotBin "C:\path\to\Godot.exe"` if Godot is not 
 Manual smoke:
 
 - Confirm the start screen shows the goal and controls.
-- Confirm the timer waits until the round starts.
+- Confirm the timer waits until the run starts.
+- Confirm the HUD starts at Floor 1.
 - Move in all directions.
 - Pick up a parcel.
 - Deliver it to the mailbox.
 - Touch a hazard while carrying a parcel and confirm the penalty.
-- Deliver 5 parcels and confirm the win state.
-- Let the timer expire and confirm the loss state.
-- Press `R` after an end state and confirm the start screen returns.
+- Deliver 5 parcels and confirm the floor-clear state.
+- Press Enter or Space after floor clear and confirm Floor 2 starts.
+- Let the timer expire and confirm the run-over state.
+- Press `R` after run over and confirm the start screen returns with Floor 1.
