@@ -15,6 +15,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - GitHub Actions: `.github/workflows/`
 - Local verification wrapper: `tools/verify-godot.ps1`
 - Current-state gameplay docs: `docs/current/`
+- Optional local Godot MCP tooling decision: `docs/current/GODOT_MCP.md`
 - Backlog snapshot: `docs/BACKLOG.md`; live task state stays in GitHub Issues
 - Agent workflow docs: `docs/GITHUB_ISSUE_WORKFLOW.md`, `docs/AGENT_HANDOFF_TEMPLATE.md`
 - Generated files not to commit: `.godot/`, `build/`, local editor/cache files
@@ -34,6 +35,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - If new work appears, create or request a follow-up issue instead of expanding the ticket.
 - Do not revert unrelated user changes.
 - Do not commit generated `.godot/` or `build/` output.
+- If Godot AI MCP is available locally, use it for scene/node inspection when it lowers risk. It is optional tooling; keep GitHub issues and current docs as the source of truth.
 
 ## GitHub Issue Workflow
 

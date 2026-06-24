@@ -26,6 +26,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 - `tools/test-godot.ps1` runs automated rule tests for deterministic gameplay helpers.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
 - `tools/verify-godot.ps1` provides a repeatable local Godot scene/export check.
+- Godot AI MCP has been adopted as optional local editor-assist tooling; see `docs/current/GODOT_MCP.md`.
 
 ## Next Product Direction
 
@@ -33,7 +34,7 @@ The next version should continue improving mobile-friendly web play:
 
 - Test the live GitHub Pages build on real phones and tune landscape fill, readability, and touch feel from feedback.
 - Keep broadening automated coverage when gameplay rules become harder to verify manually.
-- Evaluate whether a Godot MCP/server workflow should become part of the agent development setup.
+- Use optional Godot AI MCP tooling on scene-heavy issues when it is available locally.
 
 ## Near-Term Epics
 
@@ -52,8 +53,8 @@ The next version should continue improving mobile-friendly web play:
 
 - [#35 Bug: mobile web viewport does not fit correctly in portrait and landscape](https://github.com/joeypshell/codex/issues/35)
   Fix the live mobile browser viewport behavior after real-phone testing showed portrait squishing and incomplete landscape fill.
-- [#36 Feature: evaluate Godot MCP server integration for scene-aware development](https://github.com/joeypshell/codex/issues/36)
-  Decide whether a Godot MCP/server integration is worth adding for scene inspection, UI debugging, and future agent workflow improvements.
+- [#37 Setup: install and verify Godot AI MCP for local Codex scene inspection](https://github.com/joeypshell/codex/issues/37)
+  Confirm the optional Godot AI MCP tool can connect locally and inspect a live Godot scene.
 
 ## Concrete Scaling Rules
 
@@ -82,7 +83,7 @@ The next version should continue improving mobile-friendly web play:
 
 ## Later Tooling Evaluation
 
-- If #36 adopts a Godot MCP/server integration, promote the durable setup and usage rules into `AGENTS.md`.
+- After local Godot AI MCP setup is confirmed, use it on a small scene/UI issue and promote any useful repeatable workflow back into `AGENTS.md`.
 
 ## Later Testing Work
 

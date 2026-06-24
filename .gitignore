@@ -4,6 +4,9 @@
 build/
 export.cfg
 
+# Local Godot editor tooling
+addons/godot_ai/
+
 # OS/editor noise
 .DS_Store
 Thumbs.db
