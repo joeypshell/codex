@@ -32,6 +32,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 
 The next version should continue improving mobile-friendly web play:
 
+- Treat v1 mobile web play as landscape-first, with portrait mode guiding players to rotate instead of supporting full portrait gameplay.
 - Test the live GitHub Pages build on real phones and tune landscape fill, readability, and touch feel from feedback.
 - Keep broadening automated coverage when gameplay rules become harder to verify manually.
 - Use optional Godot AI MCP tooling on scene-heavy issues when it is available locally.
@@ -51,10 +52,10 @@ The next version should continue improving mobile-friendly web play:
 
 ## Near-Term Issue Order
 
-- [#39 Design: choose mobile presentation strategy for phone web play](https://github.com/joeypshell/codex/issues/39)
-  Decide whether v1 mobile web play is landscape-first with a rotate prompt or a true portrait-responsive redesign.
+- [#40 Feature: implement landscape-first mobile web presentation](https://github.com/joeypshell/codex/issues/40)
+  Add a portrait rotate prompt and simplify mobile viewport behavior around the landscape-first v1 strategy.
 - [#35 Bug: mobile web viewport does not fit correctly in portrait and landscape](https://github.com/joeypshell/codex/issues/35)
-  Fix the live mobile browser viewport behavior after real-phone testing showed portrait squishing and incomplete landscape fill.
+  Fix or narrow the live mobile browser viewport behavior using the landscape-first decision from #39.
 - [#38 Tooling: use Godot AI MCP to inspect and debug the mobile viewport issue](https://github.com/joeypshell/codex/issues/38)
   Use the MCP on a real scene/UI debugging task and record whether it helps with #35.
 
@@ -82,6 +83,7 @@ The next version should continue improving mobile-friendly web play:
 - Large custom art or audio asset production.
 - Dialogue, inventory, NPC systems, or combat.
 - Major scene/script refactors without a specific issue.
+- True portrait-responsive mobile gameplay before the landscape-first phone experience is stable.
 
 ## Later Tooling Evaluation
 
