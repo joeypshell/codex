@@ -14,7 +14,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - The run starts on Floor 1.
 - Each floor requires 5 glowing parcel deliveries before the night timer reaches 0.
 - The timer waits on the start screen and starts when active play begins.
-- The HUD shows the current floor, deliveries, timer, and carried parcel state.
+- The HUD shows the current floor, best floor for the current browser session, floor deliveries, total deliveries for the current run, timer, and carried parcel state.
 - The player can carry one parcel at a time.
 - Parcels spawn at safe positions away from the player and mailbox.
 - Floor 1 keeps a deterministic fragile parcel pattern after deliveries `1` and `3`.
@@ -30,6 +30,8 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - There is no final floor or final win state.
 - The run ends only when time reaches 0.
 - Press `R` after a run ends to return to the start screen for a fresh Floor 1 run.
+- Total deliveries reset for each fresh run.
+- Best floor is kept only in memory for the current browser session; there is no persistent save data.
 
 ## Floor Scaling
 
@@ -54,11 +56,11 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - `scenes/Parcel.tscn`: collectible parcel
 - `scenes/Hazard.tscn`: moving hazard
 - `scenes/Mailbox.tscn`: delivery target
-- `scenes/HUD.tscn`: floor, score, timer, carried state, floor-clear/loss messages
+- `scenes/HUD.tscn`: floor, session best, floor deliveries, run total, timer, carried state, floor-clear/loss messages
 
 ## Script Responsibilities
 
-- `scripts/main.gd`: run and floor lifecycle, spawn rules, difficulty scaling, hazard penalties
+- `scripts/main.gd`: run and floor lifecycle, run score state, spawn rules, difficulty scaling, hazard penalties
 - `scripts/player.gd`: input, movement, carrying state, parcel pickup signal
 - `scripts/parcel.gd`: collectible state and cleanup
 - `scripts/hazard.gd`: patrol motion
@@ -87,13 +89,14 @@ Manual smoke:
 
 - Confirm the start screen shows the goal and controls.
 - Confirm the timer waits until the run starts.
-- Confirm the HUD starts at Floor 1.
+- Confirm the HUD starts at Floor 1, Best 1, and Total 0.
 - Move in all directions.
 - Pick up a parcel.
 - Deliver it to the mailbox.
 - Touch a hazard while carrying a parcel and confirm the penalty.
 - Deliver 5 parcels and confirm the floor-clear state.
 - Press Enter or Space after floor clear and confirm Floor 2 starts.
+- Confirm total deliveries and best floor update as floors advance.
 - Confirm fragile parcels appear more often on later floors but normal parcels still appear.
 - Let the timer expire and confirm the run-over state.
 - Press `R` after run over and confirm the start screen returns with Floor 1.

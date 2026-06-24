@@ -33,7 +33,9 @@ const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 @export var hazard_scene: PackedScene
 
 var deliveries := 0
+var total_deliveries := 0
 var floor_number := 1
+var best_floor := 1
 var time_left := BASE_FLOOR_TIME
 var state := GameState.READY
 var hazard_hit_cooldown := 0.0
@@ -77,16 +79,19 @@ func _process(delta: float) -> void:
 	if time_left <= 0.0:
 		end_run()
 	else:
-		hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+		_update_hud()
 
 
 func start_run() -> void:
 	floor_number = 1
+	total_deliveries = 0
+	best_floor = max(best_floor, floor_number)
 	start_floor()
 
 
 func advance_floor() -> void:
 	floor_number += 1
+	best_floor = max(best_floor, floor_number)
 	start_floor()
 
 
@@ -99,7 +104,7 @@ func start_floor() -> void:
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
 	hud.clear_message()
-	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	_update_hud()
 	_spawn_hazards()
 	_spawn_next_parcel()
 
@@ -107,6 +112,7 @@ func start_floor() -> void:
 func show_start_screen() -> void:
 	state = GameState.READY
 	floor_number = 1
+	total_deliveries = 0
 	deliveries = 0
 	time_left = _floor_time()
 	hazard_hit_cooldown = 0.0
@@ -114,7 +120,7 @@ func show_start_screen() -> void:
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
 	player.stop()
-	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	_update_hud()
 	hud.show_message("Firefly Courier\nDeliver 5 parcels to clear each floor.\nMove with WASD or arrows.\nPress Enter, Space, or move to start.")
 
 
@@ -213,7 +219,7 @@ func _on_player_parcel_pickup(parcel: Area2D) -> void:
 	player.update_carrying(true, parcel_type)
 	var event_text := "Fragile parcel picked up" if parcel_type == PARCEL_TYPE_FRAGILE else "Parcel picked up"
 	hud.show_event(event_text, PICKUP_EVENT_COLOR)
-	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	_update_hud()
 
 
 func _on_mailbox_delivery_requested() -> void:
@@ -221,13 +227,14 @@ func _on_mailbox_delivery_requested() -> void:
 		return
 
 	deliveries += 1
+	total_deliveries += 1
 	player.update_carrying(false)
 	hud.show_event("Delivered! %d to go" % max(0, TARGET_DELIVERIES - deliveries), DELIVERY_EVENT_COLOR)
 	if deliveries >= TARGET_DELIVERIES:
 		clear_floor()
 	else:
 		_spawn_next_parcel()
-		hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+		_update_hud()
 
 
 func _on_hazard_body_entered(body: Node2D) -> void:
@@ -265,23 +272,37 @@ func _apply_hazard_penalty() -> void:
 	if time_left <= 0.0:
 		end_run()
 	else:
-		hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+		_update_hud()
 
 
 func clear_floor() -> void:
 	state = GameState.FLOOR_CLEAR
+	best_floor = max(best_floor, floor_number)
 	player.stop()
 	_clear_children(parcels)
 	_clear_children(hazards)
-	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	_update_hud()
 	hud.show_message("Floor %d clear!\nPress Enter or Space for Floor %d." % [floor_number, floor_number + 1])
 
 
 func end_run() -> void:
 	state = GameState.LOST
+	best_floor = max(best_floor, floor_number)
 	player.stop()
-	hud.update_status(floor_number, deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
+	_update_hud()
 	hud.show_message("Run ended on Floor %d.\nPress R to start a fresh run." % floor_number)
+
+
+func _update_hud() -> void:
+	hud.update_status(
+		floor_number,
+		best_floor,
+		deliveries,
+		TARGET_DELIVERIES,
+		total_deliveries,
+		time_left,
+		player.carrying_parcel
+	)
 
 
 func _clear_children(node: Node) -> void:

@@ -19,9 +19,17 @@ func _process(delta: float) -> void:
 	event_label.modulate.a = min(1.0, event_time_left * 2.0)
 
 
-func update_status(floor_number: int, deliveries: int, target_deliveries: int, time_left: float, carrying: bool) -> void:
-	floor_label.text = "Floor: %d" % floor_number
-	score_label.text = "Deliveries: %d / %d" % [deliveries, target_deliveries]
+func update_status(
+	floor_number: int,
+	best_floor: int,
+	deliveries: int,
+	target_deliveries: int,
+	total_deliveries: int,
+	time_left: float,
+	carrying: bool
+) -> void:
+	floor_label.text = "Floor: %d  Best: %d" % [floor_number, best_floor]
+	score_label.text = "Deliveries: %d / %d  Total: %d" % [deliveries, target_deliveries, total_deliveries]
 	timer_label.text = "Night: %02d" % max(0, ceili(time_left))
 	carry_label.text = "Parcel: %s" % ("carried" if carrying else "none")
 
