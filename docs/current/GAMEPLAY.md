@@ -96,6 +96,12 @@ Preferred checks when Godot is available:
 .\tools\verify-godot.ps1
 ```
 
+Automated rule tests:
+
+```powershell
+.\tools\test-godot.ps1
+```
+
 Use `.\tools\verify-godot.ps1 -GodotBin "C:\path\to\Godot.exe"` if Godot is not on PATH. The script writes web export output under ignored `build/web`.
 
 Manual smoke:

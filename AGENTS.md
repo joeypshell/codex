@@ -62,10 +62,17 @@ Preferred checks when Godot is available:
 .\tools\verify-godot.ps1
 ```
 
+Run automated rule tests with:
+
+```powershell
+.\tools\test-godot.ps1
+```
+
 If Godot is not on PATH, pass an explicit binary path:
 
 ```powershell
 .\tools\verify-godot.ps1 -GodotBin "C:\path\to\Godot.exe"
+.\tools\test-godot.ps1 -GodotBin "C:\path\to\Godot.exe"
 ```
 
 Manual checks:
