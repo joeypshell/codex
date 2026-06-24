@@ -13,6 +13,7 @@ signal touch_restart_requested
 @onready var message_label: Label = $Root/MessageLabel
 @onready var mobile_controls: Control = $Root/MobileControls
 @onready var action_controls: Control = $Root/ActionControls
+@onready var portrait_prompt: Control = $Root/PortraitPrompt
 @onready var upgrade_buttons := [
 	$Root/ActionControls/UpgradeButton1,
 	$Root/ActionControls/UpgradeButton2,
@@ -34,10 +35,12 @@ func _ready() -> void:
 	restart_button.pressed.connect(_on_restart_button_pressed)
 	hide_action_controls()
 	_update_mobile_controls_visibility()
+	_update_portrait_prompt_visibility()
 
 
 func _process(delta: float) -> void:
 	_update_mobile_controls_visibility()
+	_update_portrait_prompt_visibility()
 	if event_time_left <= 0.0:
 		event_label.modulate.a = 0.0
 		return
@@ -47,7 +50,7 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not _mobile_controls_enabled():
+	if not _mobile_controls_enabled() or portrait_prompt.visible:
 		return
 
 	if event is InputEventScreenTouch:
@@ -164,7 +167,11 @@ func _on_restart_button_pressed() -> void:
 
 
 func _update_mobile_controls_visibility() -> void:
-	mobile_controls.visible = _mobile_controls_enabled()
+	mobile_controls.visible = _mobile_controls_enabled() and not _mobile_portrait_active()
+
+
+func _update_portrait_prompt_visibility() -> void:
+	portrait_prompt.visible = _mobile_portrait_active()
 
 
 func _mobile_controls_enabled() -> bool:
@@ -175,6 +182,11 @@ func _mobile_controls_enabled() -> bool:
 		or OS.has_feature("web_ios")
 		or viewport_size.x < 760.0
 	)
+
+
+func _mobile_portrait_active() -> bool:
+	var viewport_size := get_viewport().get_visible_rect().size
+	return _mobile_controls_enabled() and viewport_size.y > viewport_size.x
 
 
 func _is_touch_on_action_controls(position: Vector2) -> bool:

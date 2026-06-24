@@ -126,3 +126,40 @@ offset_top = 64.0
 offset_right = 228.0
 offset_bottom = 124.0
 text = "Restart"
+
+[node name="PortraitPrompt" type="Control" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Backdrop" type="ColorRect" parent="Root/PortraitPrompt"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.035, 0.06, 0.095, 0.96)
+
+[node name="PromptLabel" type="Label" parent="Root/PortraitPrompt"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -72.0
+offset_right = 210.0
+offset_bottom = 72.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Rotate your phone\nFirefly Courier plays in landscape"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

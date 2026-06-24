@@ -93,7 +93,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - The expected public URL after a successful Pages deployment is `https://joeypshell.github.io/codex/`.
 - The web build uses responsive canvas scaling for desktop and mobile browser viewports.
 - Mobile web play is landscape-first for v1. The arena and HUD are built around a fixed 960x540 landscape viewport.
-- Portrait phone gameplay is out of scope for now; portrait mode should direct the player to rotate instead of trying to run a squished game view.
+- Portrait phone gameplay is out of scope for now; portrait mode shows a rotate prompt instead of trying to run a squished game view.
 - Landscape mode should preserve a readable 16:9 game view and fill the available browser viewport as consistently as practical.
 - Phone-sized browser play is supported as a web target, with touch-and-slide movement, tappable upgrade choices, and a tappable Restart button.
 - The web export shell is expected to fill the phone browser viewport in landscape instead of rendering as a small fixed-size canvas. Browser URL bars may remain visible unless the browser allows fullscreen from the first touch or the game is launched as an installed web app.

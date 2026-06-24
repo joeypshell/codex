@@ -22,6 +22,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 - Floors now choose from Layout A, Layout B, and Layout C while avoiding immediate repeats when possible.
 - The web build has responsive/mobile viewport settings.
 - Phone/touch play has touch-and-slide movement, upgrade choice, and restart controls.
+- Mobile web play is landscape-first for v1 and shows a rotate prompt in portrait.
 - Mobile smoke-test steps are documented for GitHub Pages.
 - `tools/test-godot.ps1` runs automated rule tests for deterministic gameplay helpers.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
@@ -52,8 +53,6 @@ The next version should continue improving mobile-friendly web play:
 
 ## Near-Term Issue Order
 
-- [#40 Feature: implement landscape-first mobile web presentation](https://github.com/joeypshell/codex/issues/40)
-  Add a portrait rotate prompt and simplify mobile viewport behavior around the landscape-first v1 strategy.
 - [#35 Bug: mobile web viewport does not fit correctly in portrait and landscape](https://github.com/joeypshell/codex/issues/35)
   Fix or narrow the live mobile browser viewport behavior using the landscape-first decision from #39.
 - [#38 Tooling: use Godot AI MCP to inspect and debug the mobile viewport issue](https://github.com/joeypshell/codex/issues/38)
