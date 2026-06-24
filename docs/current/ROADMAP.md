@@ -20,18 +20,18 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 - Upgrade choices now apply current-run effects for speed, floor-start time, hazard penalties, and pickup radius.
 - Run over shows a summary with floor reached, total deliveries, and chosen upgrades.
 - Floors now choose from Layout A, Layout B, and Layout C while avoiding immediate repeats when possible.
+- The web build has responsive/mobile viewport settings.
+- Phone/touch play has on-screen movement, upgrade choice, and restart controls.
+- Mobile smoke-test steps are documented for GitHub Pages.
 - `tools/test-godot.ps1` runs automated rule tests for deterministic gameplay helpers.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
 - `tools/verify-godot.ps1` provides a repeatable local Godot scene/export check.
 
 ## Next Product Direction
 
-The next version should make the web build mobile-friendly:
+The next version should continue improving mobile-friendly web play:
 
-- Detect phone-sized/touch browser play and present mobile controls.
-- Keep desktop keyboard controls unchanged.
-- Make the HUD, floor-clear choices, and run-over summary readable on phone portrait and landscape layouts.
-- Verify the GitHub Pages build manually on a phone, not just in the desktop browser.
+- Test the live GitHub Pages build on real phones and tune layout/control placement from feedback.
 - Keep broadening automated coverage when gameplay rules become harder to verify manually.
 
 ## Near-Term Epics
@@ -49,11 +49,7 @@ The next version should make the web build mobile-friendly:
 
 ## Near-Term Issue Order
 
-1. [#30 Add responsive web/mobile viewport settings](https://github.com/joeypshell/codex/issues/30)
-2. [#31 Add touch movement controls for phones](https://github.com/joeypshell/codex/issues/31)
-3. [#32 Add touch controls for upgrade choices and restart](https://github.com/joeypshell/codex/issues/32)
-4. [#33 Polish HUD and message layout for mobile](https://github.com/joeypshell/codex/issues/33)
-5. [#34 Document mobile smoke testing](https://github.com/joeypshell/codex/issues/34)
+No open near-term implementation issues remain. Create focused follow-up issues from phone testing feedback.
 
 ## Concrete Scaling Rules
 

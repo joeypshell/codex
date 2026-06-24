@@ -129,3 +129,15 @@ Manual smoke:
 - Let the timer expire and confirm the run-over state.
 - Confirm the run-over summary shows floor reached, total deliveries, and upgrades chosen.
 - Press `R` after run over and confirm the start screen returns with Floor 1.
+
+Mobile web smoke through GitHub Pages:
+
+- Open `https://joeypshell.github.io/codex/` on a phone browser.
+- Check portrait and landscape readability where practical.
+- Confirm the canvas is visible and not awkwardly cropped.
+- Start a run with the on-screen D-pad.
+- Move in all directions with touch controls.
+- Pick up a parcel and deliver it to the mailbox.
+- Clear a floor and choose an upgrade by tapping an upgrade button.
+- Let the timer expire and confirm the run-over summary is readable.
+- Tap Restart and confirm a fresh Floor 1 run starts.
