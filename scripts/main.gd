@@ -27,8 +27,21 @@ const FRAGILE_DELIVERY_INTERVAL := 2
 const BASE_FRAGILE_CHANCE := 0.25
 const FRAGILE_CHANCE_PER_FLOOR := 0.08
 const MAX_FRAGILE_CHANCE := 0.75
-const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
+const LAYOUT_A := {
+	"id": "A",
+	"player_start": Vector2(110, 438),
+	"mailbox_position": Vector2(858, 438),
+	"hazards": [
+		{"position": Vector2(300, 150), "direction": Vector2.RIGHT, "speed": 68.0, "travel": 150.0},
+		{"position": Vector2(640, 220), "direction": Vector2.DOWN, "speed": 58.0, "travel": 130.0},
+		{"position": Vector2(420, 380), "direction": Vector2.LEFT, "speed": 76.0, "travel": 180.0},
+		{"position": Vector2(210, 310), "direction": Vector2.DOWN, "speed": 64.0, "travel": 120.0},
+		{"position": Vector2(740, 360), "direction": Vector2.LEFT, "speed": 70.0, "travel": 150.0},
+		{"position": Vector2(520, 110), "direction": Vector2.RIGHT, "speed": 62.0, "travel": 130.0},
+	],
+}
+const LAYOUTS := [LAYOUT_A]
 const UPGRADE_BRIGHTER_WINGS := "brighter_wings"
 const UPGRADE_MOONLIT_MINUTE := "moonlit_minute"
 const UPGRADE_GENTLE_HANDLING := "gentle_handling"
@@ -65,6 +78,7 @@ var hazard_hit_cooldown := 0.0
 var rng := RandomNumberGenerator.new()
 var chosen_upgrades: Array[String] = []
 var pending_upgrade_options: Array[Dictionary] = []
+var current_layout: Dictionary = LAYOUT_A
 
 @onready var player = $Player
 @onready var parcels = $Parcels
@@ -127,7 +141,8 @@ func start_floor() -> void:
 	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
 	_clear_children(hazards)
-	player.reset_for_round(PLAYER_START)
+	_apply_current_layout()
+	player.reset_for_round(_current_player_start())
 	_apply_upgrade_effects()
 	hud.clear_message()
 	_update_hud()
@@ -146,7 +161,9 @@ func show_start_screen() -> void:
 	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
 	_clear_children(hazards)
-	player.reset_for_round(PLAYER_START)
+	current_layout = LAYOUT_A
+	_apply_current_layout()
+	player.reset_for_round(_current_player_start())
 	_apply_upgrade_effects()
 	player.stop()
 	_update_hud()
@@ -191,14 +208,7 @@ func _fragile_parcel_chance() -> float:
 
 
 func _spawn_hazards() -> void:
-	var hazard_data := [
-		{"position": Vector2(300, 150), "direction": Vector2.RIGHT, "speed": 68.0, "travel": 150.0},
-		{"position": Vector2(640, 220), "direction": Vector2.DOWN, "speed": 58.0, "travel": 130.0},
-		{"position": Vector2(420, 380), "direction": Vector2.LEFT, "speed": 76.0, "travel": 180.0},
-		{"position": Vector2(210, 310), "direction": Vector2.DOWN, "speed": 64.0, "travel": 120.0},
-		{"position": Vector2(740, 360), "direction": Vector2.LEFT, "speed": 70.0, "travel": 150.0},
-		{"position": Vector2(520, 110), "direction": Vector2.RIGHT, "speed": 62.0, "travel": 130.0},
-	]
+	var hazard_data: Array = current_layout["hazards"]
 	var hazard_count: int = mini(_hazard_count(), hazard_data.size())
 	var speed_multiplier := _hazard_speed_multiplier()
 
@@ -211,6 +221,18 @@ func _spawn_hazards() -> void:
 		hazard.speed = float(data["speed"]) * speed_multiplier
 		hazard.travel_distance = float(data["travel"])
 		hazard.body_entered.connect(_on_hazard_body_entered)
+
+
+func _apply_current_layout() -> void:
+	mailbox.global_position = _current_mailbox_position()
+
+
+func _current_player_start() -> Vector2:
+	return current_layout["player_start"] as Vector2
+
+
+func _current_mailbox_position() -> Vector2:
+	return current_layout["mailbox_position"] as Vector2
 
 
 func _floor_time() -> float:
