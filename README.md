@@ -1,13 +1,16 @@
 # Firefly Courier
 
-Firefly Courier is a tiny 2D cozy arcade game built in Godot 4.7 with GDScript. You guide a firefly through a garden, collect glowing parcels, avoid drifting hazards, and clear as many delivery floors as possible before the night timer runs out.
+Firefly Courier is a tiny 2D cozy roguelike courier game built in Godot 4.7 with GDScript. You guide a firefly through shifting garden layouts, collect glowing parcels, choose upgrades between floors, and clear as many delivery floors as possible before the night timer runs out.
 
 ## Controls
 
 - Start run: Enter, Space, or any movement key
 - Move: WASD or arrow keys
+- Move on mobile/touch: touch anywhere in the play area and slide like an analog thumbstick
 - Choose upgrade after floor clear: 1, 2, or 3
+- Choose upgrade on mobile/touch: tap an upgrade button
 - Return to start screen after run over: R
+- Return to start screen on mobile/touch: tap Restart
 
 ## How to Run
 
@@ -63,17 +66,22 @@ The web export is installable as a PWA. On a phone browser, use **Add to Home Sc
 - Touch the mailbox while carrying a parcel to deliver it.
 - Deliver 5 parcels before the timer reaches 0 to clear the current floor.
 - Choose one of three upgrades after a floor clear to advance to the next floor.
-- Brighter Wings increases movement speed for the current run.
-- Moonlit Minute adds time to future floors for the current run.
-- Gentle Handling lowers fragile hazard penalties.
-- Lucky Satchel lowers normal hazard penalties.
-- Wide Glow increases pickup radius.
+- Brighter Wings increases movement speed for the current run, up to 3 stacks.
+- Moonlit Minute adds time to future floors for the current run, up to 3 stacks.
+- Gentle Handling lowers fragile hazard penalties, up to 2 stacks.
+- Lucky Satchel lowers normal hazard penalties, up to 2 stacks.
+- Wide Glow increases pickup radius, up to 2 stacks.
+- Upgrades that reach their stack cap stop appearing in the choice pool.
 - When the run ends, the summary shows floor reached, total deliveries, and chosen upgrades.
 - There is no final win state; the run continues until the timer reaches 0.
-- The first parcel is normal. Later parcels alternate between fragile and normal.
+- The HUD shows current floor, best floor for the current browser session, floor deliveries, total deliveries, timer, and carried parcel state.
+- Floors choose from Layout A, Layout B, and Layout C while avoiding immediate repeats when possible.
+- Floor 1 uses a predictable fragile parcel pattern after deliveries 1 and 3.
+- Floor 2 and later roll fragile parcels with a floor-based chance, while normal parcels can still appear.
 - Fragile parcels are pink/yellow and use a matching carried-parcel indicator.
 - Touching a hazard drops your carried parcel and costs time: 6 seconds for normal parcels, 12 seconds for fragile parcels.
 - Later floors shorten the timer and increase hazard count and speed.
+- Movement is tuned for direct keyboard response and analog touch-slide control with a small touch deadzone.
 
 ## Project Shape
 
