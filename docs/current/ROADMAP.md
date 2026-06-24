@@ -2,7 +2,7 @@
 
 This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remain the active task contract; this file explains what should be tackled next and what should stay out of scope.
 
-Current direction: evolve Firefly Courier from a one-screen delivery arcade game into an endless, browser-playable roguelike courier run.
+Current direction: evolve Firefly Courier from a one-screen delivery arcade game into an endless, browser-playable roguelike courier run that works well on desktop and mobile browsers.
 
 ## Current Playable State
 
@@ -26,13 +26,18 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 
 ## Next Product Direction
 
-The next version should become an endless roguelike run:
+The next version should make the web build mobile-friendly:
 
-- Keep the endless floor loop readable and easy to tune.
+- Detect phone-sized/touch browser play and present mobile controls.
+- Keep desktop keyboard controls unchanged.
+- Make the HUD, floor-clear choices, and run-over summary readable on phone portrait and landscape layouts.
+- Verify the GitHub Pages build manually on a phone, not just in the desktop browser.
 - Keep broadening automated coverage when gameplay rules become harder to verify manually.
 
 ## Near-Term Epics
 
+- Mobile web playability
+  Add responsive/mobile HUD behavior, touch movement controls, touch upgrade/restart controls, and mobile smoke-test docs.
 - [#13 Epic: Infinite roguelike run foundation](https://github.com/joeypshell/codex/issues/13)
   Add endless floors, floor advancement, formula-driven difficulty, and floor-based fragile parcel scaling.
 - [#14 Epic: Upgrade choices between floors](https://github.com/joeypshell/codex/issues/14)
@@ -44,7 +49,12 @@ The next version should become an endless roguelike run:
 
 ## Near-Term Issue Order
 
-No open near-term implementation issues remain. Create focused follow-up issues before expanding scope.
+1. Create mobile web playability epic.
+2. Add responsive web/mobile viewport settings.
+3. Add touch movement controls for phones.
+4. Add touch controls for upgrade choices and restart.
+5. Add mobile HUD/layout polish.
+6. Document mobile smoke testing.
 
 ## Concrete Scaling Rules
 
@@ -68,7 +78,6 @@ No open near-term implementation issues remain. Create focused follow-up issues 
 - Persistent save data, accounts, shops, currencies, or long-term progression systems.
 - Procedural map generation before fixed layout presets work.
 - Large custom art or audio asset production.
-- Mobile/touch controls.
 - Dialogue, inventory, NPC systems, or combat.
 - Major scene/script refactors without a specific issue.
 
