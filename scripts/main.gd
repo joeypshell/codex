@@ -5,6 +5,7 @@ enum GameState { READY, PLAYING, WON, LOST }
 const TARGET_DELIVERIES := 5
 const ROUND_TIME := 60.0
 const HAZARD_PENALTY := 6.0
+const FRAGILE_HAZARD_PENALTY := 12.0
 const HAZARD_TOUCH_DISTANCE := 34.0
 const HAZARD_HIT_COOLDOWN := 1.0
 const PICKUP_EVENT_COLOR := Color(0.62, 0.95, 1.0)
@@ -195,11 +196,16 @@ func _apply_hazard_penalty() -> void:
 		return
 
 	hazard_hit_cooldown = HAZARD_HIT_COOLDOWN
-	time_left = max(0.0, time_left - HAZARD_PENALTY)
-	hud.show_event("Hazard hit! -%d seconds" % int(HAZARD_PENALTY), HAZARD_EVENT_COLOR)
+	var penalty := HAZARD_PENALTY
+	var event_text := "Hazard hit! -%d seconds" % int(HAZARD_PENALTY)
 	if player.carrying_parcel:
+		if player.carried_parcel_type == PARCEL_TYPE_FRAGILE:
+			penalty = FRAGILE_HAZARD_PENALTY
+			event_text = "Fragile parcel broke! -%d seconds" % int(FRAGILE_HAZARD_PENALTY)
 		player.update_carrying(false)
 		_spawn_next_parcel()
+	time_left = max(0.0, time_left - penalty)
+	hud.show_event(event_text, HAZARD_EVENT_COLOR)
 	if time_left <= 0.0:
 		end_round(false)
 	else:

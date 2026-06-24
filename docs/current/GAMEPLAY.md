@@ -20,7 +20,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Picking up a parcel shows a short HUD cue.
 - Delivering a parcel to the mailbox increments the delivery count and spawns the next parcel.
 - Delivering a parcel shows a short HUD cue.
-- Hazards patrol the arena. Touching a hazard drops the carried parcel, spawns a replacement parcel, subtracts time, and shows a short warning cue.
+- Hazards patrol the arena. Touching a hazard drops the carried parcel, spawns a replacement parcel, subtracts 6 seconds for a normal parcel or 12 seconds for a fragile parcel, and shows a short warning cue.
 - The game ends in a win after 5 deliveries or a loss when time reaches 0.
 - Press `R` after a win/loss to return to the start screen for another round.
 

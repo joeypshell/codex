@@ -113,3 +113,7 @@ The selected first expansion is documented in `docs/planning/first-gameplay-expa
 ## Later Tooling Evaluation
 
 - Evaluate the Godot AI MCP plugin after the fragile parcel slice or before a scene-heavy polish issue. Treat it as an editor-assist tool for inspecting scenes, screenshots, UI, particles, and node setup, not as a replacement for the GitHub issue workflow.
+
+## Later Testing Work
+
+- Add automated Godot tests after the fragile parcel slice is stable. Start with small checks for parcel spawn order, hazard penalties, win/loss state, and restart reset behavior before expanding test coverage.
