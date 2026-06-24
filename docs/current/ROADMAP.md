@@ -33,6 +33,7 @@ The next version should continue improving mobile-friendly web play:
 
 - Test the live GitHub Pages build on real phones and tune landscape fill, readability, and touch feel from feedback.
 - Keep broadening automated coverage when gameplay rules become harder to verify manually.
+- Evaluate whether a Godot MCP/server workflow should become part of the agent development setup.
 
 ## Near-Term Epics
 
@@ -49,7 +50,10 @@ The next version should continue improving mobile-friendly web play:
 
 ## Near-Term Issue Order
 
-No open near-term implementation issues remain. Create focused follow-up issues from phone testing feedback.
+- [#35 Bug: mobile web viewport does not fit correctly in portrait and landscape](https://github.com/joeypshell/codex/issues/35)
+  Fix the live mobile browser viewport behavior after real-phone testing showed portrait squishing and incomplete landscape fill.
+- [#36 Feature: evaluate Godot MCP server integration for scene-aware development](https://github.com/joeypshell/codex/issues/36)
+  Decide whether a Godot MCP/server integration is worth adding for scene inspection, UI debugging, and future agent workflow improvements.
 
 ## Concrete Scaling Rules
 
@@ -78,7 +82,7 @@ No open near-term implementation issues remain. Create focused follow-up issues 
 
 ## Later Tooling Evaluation
 
-- Evaluate the Godot AI MCP plugin before a scene-heavy polish issue. Treat it as an editor-assist tool for inspecting scenes, screenshots, UI, particles, and node setup, not as a replacement for the GitHub issue workflow.
+- If #36 adopts a Godot MCP/server integration, promote the durable setup and usage rules into `AGENTS.md`.
 
 ## Later Testing Work
 
