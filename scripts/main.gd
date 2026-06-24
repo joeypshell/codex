@@ -19,6 +19,7 @@ const HAZARD_HIT_COOLDOWN := 1.0
 const PICKUP_EVENT_COLOR := Color(0.62, 0.95, 1.0)
 const DELIVERY_EVENT_COLOR := Color(1.0, 0.92, 0.35)
 const HAZARD_EVENT_COLOR := Color(1.0, 0.36, 0.36)
+const UPGRADE_EVENT_COLOR := Color(0.82, 1.0, 0.58)
 const PARCEL_TYPE_NORMAL := "normal"
 const PARCEL_TYPE_FRAGILE := "fragile"
 const FIRST_FRAGILE_DELIVERY := 1
@@ -28,6 +29,13 @@ const FRAGILE_CHANCE_PER_FLOOR := 0.08
 const MAX_FRAGILE_CHANCE := 0.75
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
+const UPGRADE_POOL := [
+	{"id": "brighter_wings", "name": "Brighter Wings"},
+	{"id": "moonlit_minute", "name": "Moonlit Minute"},
+	{"id": "gentle_handling", "name": "Gentle Handling"},
+	{"id": "lucky_satchel", "name": "Lucky Satchel"},
+	{"id": "wide_glow", "name": "Wide Glow"},
+]
 
 @export var parcel_scene: PackedScene
 @export var hazard_scene: PackedScene
@@ -40,6 +48,8 @@ var time_left := BASE_FLOOR_TIME
 var state := GameState.READY
 var hazard_hit_cooldown := 0.0
 var rng := RandomNumberGenerator.new()
+var chosen_upgrades: Array[String] = []
+var pending_upgrade_options: Array[Dictionary] = []
 
 @onready var player = $Player
 @onready var parcels = $Parcels
@@ -62,9 +72,7 @@ func _process(delta: float) -> void:
 		return
 
 	if state == GameState.FLOOR_CLEAR:
-		if _start_pressed():
-			advance_floor()
-		elif Input.is_action_just_pressed("restart"):
+		if Input.is_action_just_pressed("restart"):
 			show_start_screen()
 		return
 
@@ -85,6 +93,8 @@ func _process(delta: float) -> void:
 func start_run() -> void:
 	floor_number = 1
 	total_deliveries = 0
+	chosen_upgrades.clear()
+	pending_upgrade_options.clear()
 	best_floor = max(best_floor, floor_number)
 	start_floor()
 
@@ -114,6 +124,8 @@ func show_start_screen() -> void:
 	floor_number = 1
 	total_deliveries = 0
 	deliveries = 0
+	chosen_upgrades.clear()
+	pending_upgrade_options.clear()
 	time_left = _floor_time()
 	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
@@ -278,23 +290,48 @@ func _apply_hazard_penalty() -> void:
 func clear_floor() -> void:
 	state = GameState.FLOOR_CLEAR
 	best_floor = max(best_floor, floor_number)
+	pending_upgrade_options = _pick_upgrade_options()
 	player.stop()
 	_clear_children(parcels)
 	_clear_children(hazards)
 	_update_hud()
-	hud.show_message("Floor %d clear!\nPress Enter or Space for Floor %d." % [floor_number, floor_number + 1])
+	hud.show_upgrade_choices(floor_number, floor_number + 1, pending_upgrade_options)
 
 
 func end_run() -> void:
 	state = GameState.LOST
+	pending_upgrade_options.clear()
 	best_floor = max(best_floor, floor_number)
 	player.stop()
 	_update_hud()
 	hud.show_message("Run ended on Floor %d.\nPress R to start a fresh run." % floor_number)
 
 
+func _pick_upgrade_options() -> Array[Dictionary]:
+	var available_options: Array[Dictionary] = []
+	for upgrade in UPGRADE_POOL:
+		available_options.append(upgrade)
+
+	var options: Array[Dictionary] = []
+	while options.size() < 3 and not available_options.is_empty():
+		var index := rng.randi_range(0, available_options.size() - 1)
+		options.append(available_options.pop_at(index))
+	return options
+
+
+func _choose_upgrade(index: int) -> void:
+	if index < 0 or index >= pending_upgrade_options.size():
+		return
+
+	var upgrade := pending_upgrade_options[index]
+	chosen_upgrades.append(str(upgrade["id"]))
+	hud.show_event("Chose %s" % str(upgrade["name"]), UPGRADE_EVENT_COLOR)
+	pending_upgrade_options.clear()
+	advance_floor()
+
+
 func _update_hud() -> void:
-	hud.update_status(
+		hud.update_status(
 		floor_number,
 		best_floor,
 		deliveries,
@@ -303,6 +340,25 @@ func _update_hud() -> void:
 		time_left,
 		player.carrying_parcel
 	)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if state != GameState.FLOOR_CLEAR:
+		return
+	if not event is InputEventKey:
+		return
+
+	var key_event := event as InputEventKey
+	if not key_event.pressed or key_event.echo:
+		return
+
+	match key_event.keycode:
+		KEY_1, KEY_KP_1:
+			_choose_upgrade(0)
+		KEY_2, KEY_KP_2:
+			_choose_upgrade(1)
+		KEY_3, KEY_KP_3:
+			_choose_upgrade(2)
 
 
 func _clear_children(node: Node) -> void:

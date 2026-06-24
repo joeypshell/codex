@@ -14,6 +14,9 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 - The game has start, active play, floor-clear, run-over, and restart states.
 - The run advances through endless floors instead of ending after the first 5 deliveries.
 - Later floors shorten the timer and increase hazard count and speed.
+- Later floors can produce fragile parcels more often.
+- The HUD shows total deliveries and best floor for the current browser session.
+- Clearing a floor presents three upgrade choices, then starts the next floor after a choice.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
 - `tools/verify-godot.ps1` provides a repeatable local Godot scene/export check.
 
@@ -22,9 +25,9 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 The next version should become an endless roguelike run:
 
 - Keep the endless floor loop readable and easy to tune.
-- Add floor-based fragile parcel scaling.
-- Add score and summary feedback that makes long runs feel meaningful.
-- Between floors, the player will eventually choose temporary upgrades that last only for the current run.
+- Add gameplay effects for chosen upgrades.
+- Add summary feedback that makes long runs feel meaningful.
+- Add layout variety so later floors do not feel identical.
 
 ## Near-Term Epics
 
@@ -39,9 +42,9 @@ The next version should become an endless roguelike run:
 
 ## Near-Term Issue Order
 
-1. [#20 Add floor-based fragile parcel chance](https://github.com/joeypshell/codex/issues/20)
-2. [#24 Add run score HUD](https://github.com/joeypshell/codex/issues/24)
-3. [#21 Add upgrade choice screen between floors](https://github.com/joeypshell/codex/issues/21)
+1. [#22 Implement movement and timer upgrades](https://github.com/joeypshell/codex/issues/22)
+2. [#23 Implement penalty and pickup upgrades](https://github.com/joeypshell/codex/issues/23)
+3. [#25 Add run summary screen](https://github.com/joeypshell/codex/issues/25)
 4. [#26 Introduce layout preset data](https://github.com/joeypshell/codex/issues/26)
 5. [#28 Add first automated Godot tests](https://github.com/joeypshell/codex/issues/28)
 

@@ -45,6 +45,16 @@ func show_message(message: String) -> void:
 	message_label.text = message
 
 
+func show_upgrade_choices(floor_number: int, next_floor: int, options: Array[Dictionary]) -> void:
+	var lines: Array[String] = [
+		"Floor %d clear! Choose an upgrade for Floor %d:" % [floor_number, next_floor]
+	]
+	for index in range(options.size()):
+		lines.append("%d. %s" % [index + 1, str(options[index]["name"])])
+	lines.append("Press 1, 2, or 3. Press R to restart.")
+	message_label.text = "\n".join(lines)
+
+
 func clear_message() -> void:
 	message_label.text = ""
 	event_label.text = ""

@@ -6,7 +6,7 @@ Firefly Courier is a tiny 2D cozy arcade game built in Godot 4.7 with GDScript. 
 
 - Start run: Enter, Space, or any movement key
 - Move: WASD or arrow keys
-- Advance after floor clear: Enter or Space
+- Choose upgrade after floor clear: 1, 2, or 3
 - Return to start screen after run over: R
 
 ## How to Run
@@ -46,7 +46,8 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 - Collect one parcel at a time.
 - Touch the mailbox while carrying a parcel to deliver it.
 - Deliver 5 parcels before the timer reaches 0 to clear the current floor.
-- Press Enter or Space after a floor clear to advance to the next floor.
+- Choose one of three upgrades after a floor clear to advance to the next floor.
+- Upgrade choices are stored for the current run; upgrade effects are planned as later issues.
 - There is no final win state; the run continues until the timer reaches 0.
 - The first parcel is normal. Later parcels alternate between fragile and normal.
 - Fragile parcels are pink/yellow and use a matching carried-parcel indicator.

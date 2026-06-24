@@ -26,11 +26,14 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Delivering a parcel shows a short HUD cue.
 - Hazards patrol the arena. Touching a hazard drops the carried parcel, spawns a replacement parcel, subtracts 6 seconds for a normal parcel or 12 seconds for a fragile parcel, and shows a short warning cue. This is the accepted first-pass tuning: fragile parcels are noticeable but not constant, and the stronger penalty is meaningful without ending a full round by itself.
 - Completing 5 deliveries clears the current floor instead of ending the run.
-- Press Enter or Space from the floor-clear screen to advance to the next floor.
+- The floor-clear screen shows three upgrade choices.
+- Press `1`, `2`, or `3` to choose an upgrade and start the next floor.
+- Upgrade choices are stored in the current run state, but they do not apply gameplay effects yet.
 - There is no final floor or final win state.
 - The run ends only when time reaches 0.
 - Press `R` after a run ends to return to the start screen for a fresh Floor 1 run.
 - Total deliveries reset for each fresh run.
+- Chosen upgrades reset for each fresh run.
 - Best floor is kept only in memory for the current browser session; there is no persistent save data.
 
 ## Floor Scaling
@@ -46,7 +49,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 
 - Move: WASD or arrow keys
 - Start run: Enter, Space, or any movement key
-- Advance after floor clear: Enter or Space
+- Choose upgrade after floor clear: `1`, `2`, or `3`
 - Return to start screen after run over: `R`
 
 ## Scene Responsibilities
@@ -56,11 +59,11 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - `scenes/Parcel.tscn`: collectible parcel
 - `scenes/Hazard.tscn`: moving hazard
 - `scenes/Mailbox.tscn`: delivery target
-- `scenes/HUD.tscn`: floor, session best, floor deliveries, run total, timer, carried state, floor-clear/loss messages
+- `scenes/HUD.tscn`: floor, session best, floor deliveries, run total, timer, carried state, upgrade choices, floor-clear/loss messages
 
 ## Script Responsibilities
 
-- `scripts/main.gd`: run and floor lifecycle, run score state, spawn rules, difficulty scaling, hazard penalties
+- `scripts/main.gd`: run and floor lifecycle, run score state, upgrade choice state, spawn rules, difficulty scaling, hazard penalties
 - `scripts/player.gd`: input, movement, carrying state, parcel pickup signal
 - `scripts/parcel.gd`: collectible state and cleanup
 - `scripts/hazard.gd`: patrol motion
@@ -95,7 +98,8 @@ Manual smoke:
 - Deliver it to the mailbox.
 - Touch a hazard while carrying a parcel and confirm the penalty.
 - Deliver 5 parcels and confirm the floor-clear state.
-- Press Enter or Space after floor clear and confirm Floor 2 starts.
+- Confirm three upgrade choices appear after floor clear.
+- Press `1`, `2`, or `3` after floor clear and confirm Floor 2 starts.
 - Confirm total deliveries and best floor update as floors advance.
 - Confirm fragile parcels appear more often on later floors but normal parcels still appear.
 - Let the timer expire and confirm the run-over state.
