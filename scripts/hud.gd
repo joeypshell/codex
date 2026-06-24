@@ -1,16 +1,34 @@
 extends CanvasLayer
 
+signal touch_movement_changed(direction: Vector2)
+signal touch_start_requested
+
 @onready var floor_label: Label = $Root/FloorLabel
 @onready var score_label: Label = $Root/ScoreLabel
 @onready var timer_label: Label = $Root/TimerLabel
 @onready var carry_label: Label = $Root/CarryLabel
 @onready var event_label: Label = $Root/EventLabel
 @onready var message_label: Label = $Root/MessageLabel
+@onready var mobile_controls: Control = $Root/MobileControls
+@onready var touch_up_button: Button = $Root/MobileControls/UpButton
+@onready var touch_down_button: Button = $Root/MobileControls/DownButton
+@onready var touch_left_button: Button = $Root/MobileControls/LeftButton
+@onready var touch_right_button: Button = $Root/MobileControls/RightButton
 
 var event_time_left := 0.0
+var held_touch_directions := {}
+
+
+func _ready() -> void:
+	_connect_touch_button(touch_up_button, Vector2.UP)
+	_connect_touch_button(touch_down_button, Vector2.DOWN)
+	_connect_touch_button(touch_left_button, Vector2.LEFT)
+	_connect_touch_button(touch_right_button, Vector2.RIGHT)
+	_update_mobile_controls_visibility()
 
 
 func _process(delta: float) -> void:
+	_update_mobile_controls_visibility()
 	if event_time_left <= 0.0:
 		event_label.modulate.a = 0.0
 		return
@@ -74,3 +92,36 @@ func clear_message() -> void:
 	event_label.text = ""
 	event_time_left = 0.0
 	event_label.modulate.a = 0.0
+
+
+func _connect_touch_button(button: Button, direction: Vector2) -> void:
+	button.button_down.connect(_on_touch_button_down.bind(direction))
+	button.button_up.connect(_on_touch_button_up.bind(direction))
+
+
+func _on_touch_button_down(direction: Vector2) -> void:
+	held_touch_directions[direction] = true
+	touch_start_requested.emit()
+	_emit_touch_direction()
+
+
+func _on_touch_button_up(direction: Vector2) -> void:
+	held_touch_directions.erase(direction)
+	_emit_touch_direction()
+
+
+func _emit_touch_direction() -> void:
+	var direction := Vector2.ZERO
+	for held_direction in held_touch_directions.keys():
+		direction += held_direction as Vector2
+	touch_movement_changed.emit(direction.normalized() if direction != Vector2.ZERO else Vector2.ZERO)
+
+
+func _update_mobile_controls_visibility() -> void:
+	var viewport_size := get_viewport().get_visible_rect().size
+	mobile_controls.visible = (
+		DisplayServer.is_touchscreen_available()
+		or OS.has_feature("web_android")
+		or OS.has_feature("web_ios")
+		or viewport_size.x < 760.0
+	)

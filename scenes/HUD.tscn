@@ -66,3 +66,43 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 text = ""
+
+[node name="MobileControls" type="Control" parent="Root"]
+visible = false
+layout_mode = 0
+offset_left = 28.0
+offset_top = 330.0
+offset_right = 212.0
+offset_bottom = 514.0
+
+[node name="UpButton" type="Button" parent="Root/MobileControls"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 0.0
+offset_right = 120.0
+offset_bottom = 56.0
+text = "UP"
+
+[node name="LeftButton" type="Button" parent="Root/MobileControls"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 64.0
+offset_right = 56.0
+offset_bottom = 120.0
+text = "L"
+
+[node name="RightButton" type="Button" parent="Root/MobileControls"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 64.0
+offset_right = 184.0
+offset_bottom = 120.0
+text = "R"
+
+[node name="DownButton" type="Button" parent="Root/MobileControls"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 128.0
+offset_right = 120.0
+offset_bottom = 184.0
+text = "DN"

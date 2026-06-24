@@ -118,6 +118,8 @@ func _ready() -> void:
 	rng.randomize()
 	player.parcel_pickup.connect(_on_player_parcel_pickup)
 	mailbox.delivery_requested.connect(_on_mailbox_delivery_requested)
+	hud.touch_movement_changed.connect(_on_touch_movement_changed)
+	hud.touch_start_requested.connect(_on_touch_start_requested)
 	show_start_screen()
 
 
@@ -328,6 +330,15 @@ func _on_mailbox_delivery_requested() -> void:
 	else:
 		_spawn_next_parcel()
 		_update_hud()
+
+
+func _on_touch_movement_changed(direction: Vector2) -> void:
+	player.set_touch_direction(direction)
+
+
+func _on_touch_start_requested() -> void:
+	if state == GameState.READY:
+		start_run()
 
 
 func _on_hazard_body_entered(body: Node2D) -> void:
