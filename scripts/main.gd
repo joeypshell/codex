@@ -106,6 +106,7 @@ var chosen_upgrades: Array[String] = []
 var pending_upgrade_options: Array[Dictionary] = []
 var current_layout: Dictionary = LAYOUT_A
 var last_layout_id := ""
+var web_fullscreen_requested := false
 
 @onready var player = $Player
 @onready var parcels = $Parcels
@@ -116,12 +117,14 @@ var last_layout_id := ""
 
 func _ready() -> void:
 	rng.randomize()
+	get_viewport().size_changed.connect(_apply_mobile_viewport_scaling)
 	player.parcel_pickup.connect(_on_player_parcel_pickup)
 	mailbox.delivery_requested.connect(_on_mailbox_delivery_requested)
 	hud.touch_movement_changed.connect(_on_touch_movement_changed)
 	hud.touch_start_requested.connect(_on_touch_start_requested)
 	hud.touch_upgrade_selected.connect(_on_touch_upgrade_selected)
 	hud.touch_restart_requested.connect(_on_touch_restart_requested)
+	_apply_mobile_viewport_scaling()
 	show_start_screen()
 
 
@@ -339,6 +342,7 @@ func _on_touch_movement_changed(direction: Vector2) -> void:
 
 
 func _on_touch_start_requested() -> void:
+	_request_web_fullscreen()
 	if state == GameState.READY:
 		start_run()
 
@@ -498,6 +502,43 @@ func _update_hud() -> void:
 		time_left,
 		player.carrying_parcel
 	)
+
+
+func _apply_mobile_viewport_scaling() -> void:
+	var viewport_size := get_viewport().get_visible_rect().size
+	var use_landscape_fill := _mobile_web_viewport_active() and viewport_size.x > viewport_size.y
+	get_tree().root.content_scale_aspect = (
+		Window.CONTENT_SCALE_ASPECT_IGNORE
+		if use_landscape_fill
+		else Window.CONTENT_SCALE_ASPECT_KEEP
+	)
+
+
+func _mobile_web_viewport_active() -> bool:
+	var viewport_size := get_viewport().get_visible_rect().size
+	return (
+		DisplayServer.is_touchscreen_available()
+		or OS.has_feature("web_android")
+		or OS.has_feature("web_ios")
+		or (OS.has_feature("web") and viewport_size.x < 1024.0)
+	)
+
+
+func _request_web_fullscreen() -> void:
+	if web_fullscreen_requested or not OS.has_feature("web") or not Engine.has_singleton("JavaScriptBridge"):
+		return
+
+	web_fullscreen_requested = true
+	var bridge = Engine.get_singleton("JavaScriptBridge")
+	bridge.eval("""
+		(() => {
+			const target = document.getElementById('canvas') || document.documentElement;
+			if (!document.fullscreenElement && target.requestFullscreen) {
+				target.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
+			}
+			window.scrollTo(0, 1);
+		})();
+	""", true)
 
 
 func _unhandled_input(event: InputEvent) -> void:

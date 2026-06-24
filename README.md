@@ -53,7 +53,7 @@ https://joeypshell.github.io/codex/
 
 If the page is not live yet, open the repository settings on GitHub, go to Pages, and make sure the source is set to GitHub Actions.
 
-After mobile-related changes, smoke test the GitHub Pages build from a phone in portrait and landscape. Confirm landscape fills the phone screen, touch-and-slide movement works, upgrades can be tapped, and Restart works from the run-over screen.
+After mobile-related changes, smoke test the GitHub Pages build from a phone in portrait and landscape. Confirm portrait is not squished, landscape fills the available browser viewport, touch-and-slide movement works, upgrades can be tapped, and Restart works from the run-over screen.
 
 ## Game Rules
 

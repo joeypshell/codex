@@ -92,9 +92,10 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Generated web output goes under `build/web` and should not be committed.
 - The expected public URL after a successful Pages deployment is `https://joeypshell.github.io/codex/`.
 - The web build uses responsive canvas scaling for desktop and mobile browser viewports.
-- The Godot stretch aspect is `ignore` so the fixed 960x540 game viewport fills phone landscape screens instead of leaving unused space.
+- The default Godot stretch aspect is `keep` so portrait phone play preserves the 16:9 game shape instead of squishing the arena.
+- On mobile web-sized landscape viewports, `scripts/main.gd` switches the root stretch aspect to `ignore` so the game fills the available browser viewport.
 - Phone-sized browser play is supported as a web target, with touch-and-slide movement, tappable upgrade choices, and a tappable Restart button.
-- The web export shell is expected to fill the phone browser viewport in landscape instead of rendering as a small fixed-size canvas.
+- The web export shell is expected to fill the phone browser viewport in landscape instead of rendering as a small fixed-size canvas. Browser URL bars may remain visible unless the browser allows fullscreen from the first touch or the game is launched as an installed web app.
 - Mobile HUD layout keeps upgrade/restart buttons and central messages in separate screen regions so upgrade choices and run summaries stay readable.
 
 ## Verification
@@ -135,8 +136,9 @@ Manual smoke:
 Mobile web smoke through GitHub Pages:
 
 - Open `https://joeypshell.github.io/codex/` on a phone browser.
-- Check portrait and landscape readability where practical.
-- Rotate to landscape and confirm the canvas fills the phone screen.
+- Check that portrait mode is not visibly squished.
+- Rotate to landscape and confirm the canvas fills the available browser viewport.
+- On browsers that allow it, touch the game once and confirm fullscreen mode hides browser chrome.
 - Start a run by touching and sliding anywhere in the play area.
 - Move in all directions by sliding from the touch start point.
 - Pick up a parcel and deliver it to the mailbox.
