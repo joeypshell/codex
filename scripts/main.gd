@@ -10,6 +10,8 @@ const HAZARD_HIT_COOLDOWN := 1.0
 const PICKUP_EVENT_COLOR := Color(0.62, 0.95, 1.0)
 const DELIVERY_EVENT_COLOR := Color(1.0, 0.92, 0.35)
 const HAZARD_EVENT_COLOR := Color(1.0, 0.36, 0.36)
+const PARCEL_TYPE_NORMAL := "normal"
+const PARCEL_TYPE_FRAGILE := "fragile"
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 
@@ -94,11 +96,13 @@ func _start_pressed() -> bool:
 	)
 
 
-func _spawn_parcel() -> void:
+func _spawn_parcel(parcel_type := PARCEL_TYPE_NORMAL) -> void:
 	if parcel_scene == null:
 		return
 	var parcel := parcel_scene.instantiate()
 	parcels.add_child(parcel)
+	if parcel.has_method("set_parcel_type"):
+		parcel.call("set_parcel_type", parcel_type)
 	parcel.global_position = _random_safe_position()
 
 
@@ -133,10 +137,14 @@ func _random_safe_position() -> Vector2:
 func _on_player_parcel_pickup(parcel: Area2D) -> void:
 	if state != GameState.PLAYING or player.carrying_parcel:
 		return
+	var parcel_type := PARCEL_TYPE_NORMAL
+	if parcel.has_method("get_parcel_type"):
+		parcel_type = str(parcel.call("get_parcel_type"))
 	if parcel.has_method("collect"):
-		parcel.collect()
-	player.update_carrying(true)
-	hud.show_event("Parcel picked up", PICKUP_EVENT_COLOR)
+		parcel.call("collect")
+	player.update_carrying(true, parcel_type)
+	var event_text := "Fragile parcel picked up" if parcel_type == PARCEL_TYPE_FRAGILE else "Parcel picked up"
+	hud.show_event(event_text, PICKUP_EVENT_COLOR)
 	hud.update_status(deliveries, TARGET_DELIVERIES, time_left, player.carrying_parcel)
 
 

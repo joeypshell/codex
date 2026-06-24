@@ -15,6 +15,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - The timer waits on the start screen and starts when active play begins.
 - The player can carry one parcel at a time.
 - Parcels spawn at safe positions away from the player and mailbox.
+- The parcel scene supports normal and fragile visual states; current round spawning still uses normal parcels only.
 - Picking up a parcel shows a short HUD cue.
 - Delivering a parcel to the mailbox increments the delivery count and spawns the next parcel.
 - Delivering a parcel shows a short HUD cue.

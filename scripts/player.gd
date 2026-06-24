@@ -3,10 +3,15 @@ extends CharacterBody2D
 signal parcel_pickup(parcel: Area2D)
 
 const SPEED := 230.0
+const PARCEL_TYPE_NORMAL := "normal"
+const PARCEL_TYPE_FRAGILE := "fragile"
+const CARRY_LIGHT_NORMAL := Color(0.62, 0.95, 1.0, 0.75)
+const CARRY_LIGHT_FRAGILE := Color(1.0, 0.58, 0.82, 0.85)
 
 @export var arena_rect := Rect2(Vector2(24, 24), Vector2(912, 492))
 
 var carrying_parcel := false
+var carried_parcel_type := PARCEL_TYPE_NORMAL
 var active := true
 
 @onready var carry_light: Polygon2D = $CarryLight
@@ -29,9 +34,11 @@ func _physics_process(_delta: float) -> void:
 	global_position = global_position.clamp(arena_rect.position, arena_rect.position + arena_rect.size)
 
 
-func update_carrying(is_carrying: bool) -> void:
+func update_carrying(is_carrying: bool, parcel_type := PARCEL_TYPE_NORMAL) -> void:
 	carrying_parcel = is_carrying
+	carried_parcel_type = parcel_type if is_carrying else PARCEL_TYPE_NORMAL
 	carry_light.visible = is_carrying
+	carry_light.color = CARRY_LIGHT_FRAGILE if carried_parcel_type == PARCEL_TYPE_FRAGILE else CARRY_LIGHT_NORMAL
 
 
 func reset_for_round(start_position: Vector2) -> void:
