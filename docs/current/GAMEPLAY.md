@@ -9,7 +9,9 @@ Near-term work is tracked in `docs/current/ROADMAP.md` and GitHub Issues.
 Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScript.
 
 - The player controls a firefly courier in a garden arena.
-- The current arena setup is represented as Layout A data: player start, mailbox position, and hazard definitions.
+- Arena setup is represented as layout data: player start, mailbox position, and hazard definitions.
+- Layout A is the original arena setup; Layout B and Layout C add alternate mailbox and hazard arrangements.
+- Each floor chooses one available layout and avoids repeating the previous layout when possible.
 - The game opens on a start screen with the goal and controls.
 - Press Enter, Space, or any movement key to start active play.
 - The run starts on Floor 1.
@@ -101,6 +103,7 @@ Manual smoke:
 - Confirm the start screen shows the goal and controls.
 - Confirm the timer waits until the run starts.
 - Confirm the HUD starts at Floor 1, Best 1, and Total 0.
+- Confirm player, mailbox, hazards, and parcels remain visible and reachable as floors change layouts.
 - Move in all directions.
 - Pick up a parcel.
 - Deliver it to the mailbox.

@@ -41,7 +41,33 @@ const LAYOUT_A := {
 		{"position": Vector2(520, 110), "direction": Vector2.RIGHT, "speed": 62.0, "travel": 130.0},
 	],
 }
-const LAYOUTS := [LAYOUT_A]
+const LAYOUT_B := {
+	"id": "B",
+	"player_start": Vector2(850, 112),
+	"mailbox_position": Vector2(110, 438),
+	"hazards": [
+		{"position": Vector2(250, 150), "direction": Vector2.DOWN, "speed": 66.0, "travel": 150.0},
+		{"position": Vector2(510, 245), "direction": Vector2.RIGHT, "speed": 72.0, "travel": 160.0},
+		{"position": Vector2(760, 390), "direction": Vector2.UP, "speed": 60.0, "travel": 140.0},
+		{"position": Vector2(365, 390), "direction": Vector2.LEFT, "speed": 70.0, "travel": 150.0},
+		{"position": Vector2(690, 145), "direction": Vector2.DOWN, "speed": 64.0, "travel": 130.0},
+		{"position": Vector2(180, 270), "direction": Vector2.RIGHT, "speed": 68.0, "travel": 145.0},
+	],
+}
+const LAYOUT_C := {
+	"id": "C",
+	"player_start": Vector2(110, 112),
+	"mailbox_position": Vector2(850, 300),
+	"hazards": [
+		{"position": Vector2(275, 410), "direction": Vector2.RIGHT, "speed": 72.0, "travel": 160.0},
+		{"position": Vector2(540, 135), "direction": Vector2.DOWN, "speed": 62.0, "travel": 145.0},
+		{"position": Vector2(740, 225), "direction": Vector2.LEFT, "speed": 76.0, "travel": 170.0},
+		{"position": Vector2(390, 265), "direction": Vector2.UP, "speed": 60.0, "travel": 125.0},
+		{"position": Vector2(620, 420), "direction": Vector2.RIGHT, "speed": 68.0, "travel": 130.0},
+		{"position": Vector2(200, 210), "direction": Vector2.DOWN, "speed": 66.0, "travel": 135.0},
+	],
+}
+const LAYOUTS := [LAYOUT_A, LAYOUT_B, LAYOUT_C]
 const UPGRADE_BRIGHTER_WINGS := "brighter_wings"
 const UPGRADE_MOONLIT_MINUTE := "moonlit_minute"
 const UPGRADE_GENTLE_HANDLING := "gentle_handling"
@@ -79,6 +105,7 @@ var rng := RandomNumberGenerator.new()
 var chosen_upgrades: Array[String] = []
 var pending_upgrade_options: Array[Dictionary] = []
 var current_layout: Dictionary = LAYOUT_A
+var last_layout_id := ""
 
 @onready var player = $Player
 @onready var parcels = $Parcels
@@ -124,6 +151,7 @@ func start_run() -> void:
 	total_deliveries = 0
 	chosen_upgrades.clear()
 	pending_upgrade_options.clear()
+	last_layout_id = ""
 	best_floor = max(best_floor, floor_number)
 	start_floor()
 
@@ -141,6 +169,7 @@ func start_floor() -> void:
 	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
 	_clear_children(hazards)
+	_choose_floor_layout()
 	_apply_current_layout()
 	player.reset_for_round(_current_player_start())
 	_apply_upgrade_effects()
@@ -157,6 +186,7 @@ func show_start_screen() -> void:
 	deliveries = 0
 	chosen_upgrades.clear()
 	pending_upgrade_options.clear()
+	last_layout_id = ""
 	time_left = _floor_time()
 	hazard_hit_cooldown = 0.0
 	_clear_children(parcels)
@@ -225,6 +255,17 @@ func _spawn_hazards() -> void:
 
 func _apply_current_layout() -> void:
 	mailbox.global_position = _current_mailbox_position()
+
+
+func _choose_floor_layout() -> void:
+	var available_layouts: Array[Dictionary] = []
+	for layout in LAYOUTS:
+		if LAYOUTS.size() > 1 and str(layout["id"]) == last_layout_id:
+			continue
+		available_layouts.append(layout)
+
+	current_layout = available_layouts[rng.randi_range(0, available_layouts.size() - 1)]
+	last_layout_id = str(current_layout["id"])
 
 
 func _current_player_start() -> Vector2:

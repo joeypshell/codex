@@ -19,6 +19,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 - Clearing a floor presents three upgrade choices, then starts the next floor after a choice.
 - Upgrade choices now apply current-run effects for speed, floor-start time, hazard penalties, and pickup radius.
 - Run over shows a summary with floor reached, total deliveries, and chosen upgrades.
+- Floors now choose from Layout A, Layout B, and Layout C while avoiding immediate repeats when possible.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
 - `tools/verify-godot.ps1` provides a repeatable local Godot scene/export check.
 
@@ -27,7 +28,6 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 The next version should become an endless roguelike run:
 
 - Keep the endless floor loop readable and easy to tune.
-- Add layout variety so later floors do not feel identical.
 - Add automated coverage for tuning rules and reset behavior.
 
 ## Near-Term Epics
@@ -43,9 +43,7 @@ The next version should become an endless roguelike run:
 
 ## Near-Term Issue Order
 
-1. [#26 Introduce layout preset data](https://github.com/joeypshell/codex/issues/26)
-2. [#27 Add random layout per floor](https://github.com/joeypshell/codex/issues/27)
-3. [#28 Add first automated Godot tests](https://github.com/joeypshell/codex/issues/28)
+1. [#28 Add first automated Godot tests](https://github.com/joeypshell/codex/issues/28)
 
 ## Concrete Scaling Rules
 
