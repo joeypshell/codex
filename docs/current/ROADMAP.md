@@ -42,7 +42,6 @@ The first version is "done enough" when:
 
 ## Out Of Scope For Now
 
-- New gameplay systems before the V1 finish line above is met.
 - Save data, accounts, shops, currencies, or progression systems.
 - Large custom art or audio asset production.
 - Mobile/touch controls.
@@ -110,3 +109,7 @@ Once the finish line is met, plan exactly one expansion slice. Good candidates:
 - A new parcel type with a simple delivery rule.
 
 The selected first expansion is documented in `docs/planning/first-gameplay-expansion.md`: add fragile parcels as one new parcel type that reuses the current delivery loop.
+
+## Later Tooling Evaluation
+
+- Evaluate the Godot AI MCP plugin after the fragile parcel slice or before a scene-heavy polish issue. Treat it as an editor-assist tool for inspecting scenes, screenshots, UI, particles, and node setup, not as a replacement for the GitHub issue workflow.
