@@ -120,6 +120,8 @@ func _ready() -> void:
 	mailbox.delivery_requested.connect(_on_mailbox_delivery_requested)
 	hud.touch_movement_changed.connect(_on_touch_movement_changed)
 	hud.touch_start_requested.connect(_on_touch_start_requested)
+	hud.touch_upgrade_selected.connect(_on_touch_upgrade_selected)
+	hud.touch_restart_requested.connect(_on_touch_restart_requested)
 	show_start_screen()
 
 
@@ -339,6 +341,16 @@ func _on_touch_movement_changed(direction: Vector2) -> void:
 func _on_touch_start_requested() -> void:
 	if state == GameState.READY:
 		start_run()
+
+
+func _on_touch_upgrade_selected(index: int) -> void:
+	if state == GameState.FLOOR_CLEAR:
+		_choose_upgrade(index)
+
+
+func _on_touch_restart_requested() -> void:
+	if state == GameState.LOST or state == GameState.FLOOR_CLEAR:
+		show_start_screen()
 
 
 func _on_hazard_body_entered(body: Node2D) -> void:

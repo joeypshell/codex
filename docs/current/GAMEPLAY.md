@@ -62,7 +62,9 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Start run: Enter, Space, or any movement key
 - Start run on mobile/touch: press any D-pad direction
 - Choose upgrade after floor clear: `1`, `2`, or `3`
+- Choose upgrade on mobile/touch: tap an upgrade button
 - Return to start screen after run over: `R`
+- Return to start screen on mobile/touch: tap Restart
 
 ## Scene Responsibilities
 

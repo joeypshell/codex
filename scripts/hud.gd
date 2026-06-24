@@ -2,6 +2,8 @@ extends CanvasLayer
 
 signal touch_movement_changed(direction: Vector2)
 signal touch_start_requested
+signal touch_upgrade_selected(index: int)
+signal touch_restart_requested
 
 @onready var floor_label: Label = $Root/FloorLabel
 @onready var score_label: Label = $Root/ScoreLabel
@@ -14,6 +16,13 @@ signal touch_start_requested
 @onready var touch_down_button: Button = $Root/MobileControls/DownButton
 @onready var touch_left_button: Button = $Root/MobileControls/LeftButton
 @onready var touch_right_button: Button = $Root/MobileControls/RightButton
+@onready var action_controls: Control = $Root/ActionControls
+@onready var upgrade_buttons := [
+	$Root/ActionControls/UpgradeButton1,
+	$Root/ActionControls/UpgradeButton2,
+	$Root/ActionControls/UpgradeButton3,
+]
+@onready var restart_button: Button = $Root/ActionControls/RestartButton
 
 var event_time_left := 0.0
 var held_touch_directions := {}
@@ -24,6 +33,11 @@ func _ready() -> void:
 	_connect_touch_button(touch_down_button, Vector2.DOWN)
 	_connect_touch_button(touch_left_button, Vector2.LEFT)
 	_connect_touch_button(touch_right_button, Vector2.RIGHT)
+	for index in range(upgrade_buttons.size()):
+		var button: Button = upgrade_buttons[index]
+		button.pressed.connect(_on_upgrade_button_pressed.bind(index))
+	restart_button.pressed.connect(_on_restart_button_pressed)
+	hide_action_controls()
 	_update_mobile_controls_visibility()
 
 
@@ -61,6 +75,7 @@ func show_event(message: String, color: Color) -> void:
 
 func show_message(message: String) -> void:
 	message_label.text = message
+	hide_action_controls()
 
 
 func show_upgrade_choices(floor_number: int, next_floor: int, options: Array[Dictionary]) -> void:
@@ -69,8 +84,19 @@ func show_upgrade_choices(floor_number: int, next_floor: int, options: Array[Dic
 	]
 	for index in range(options.size()):
 		lines.append("%d. %s" % [index + 1, str(options[index]["name"])])
-	lines.append("Press 1, 2, or 3. Press R to restart.")
+	lines.append("Press 1, 2, or 3, or tap an upgrade.")
 	message_label.text = "\n".join(lines)
+	action_controls.visible = true
+	restart_button.visible = false
+	for index in range(upgrade_buttons.size()):
+		var button: Button = upgrade_buttons[index]
+		if index < options.size():
+			button.text = "%d. %s" % [index + 1, str(options[index]["name"])]
+			button.visible = true
+			button.disabled = false
+		else:
+			button.visible = false
+			button.disabled = true
 
 
 func show_run_summary(floor_number: int, total_deliveries: int, upgrades: Array[String]) -> void:
@@ -83,8 +109,13 @@ func show_run_summary(floor_number: int, total_deliveries: int, upgrades: Array[
 		lines.append("Upgrades: none")
 	else:
 		lines.append("Upgrades: %s" % ", ".join(upgrades))
-	lines.append("Press R to start a fresh run.")
+	lines.append("Press R or tap Restart.")
 	message_label.text = "\n".join(lines)
+	action_controls.visible = true
+	for button in upgrade_buttons:
+		button.visible = false
+		button.disabled = true
+	restart_button.visible = true
 
 
 func clear_message() -> void:
@@ -92,6 +123,15 @@ func clear_message() -> void:
 	event_label.text = ""
 	event_time_left = 0.0
 	event_label.modulate.a = 0.0
+	hide_action_controls()
+
+
+func hide_action_controls() -> void:
+	action_controls.visible = false
+	for button in upgrade_buttons:
+		button.visible = false
+		button.disabled = true
+	restart_button.visible = false
 
 
 func _connect_touch_button(button: Button, direction: Vector2) -> void:
@@ -115,6 +155,14 @@ func _emit_touch_direction() -> void:
 	for held_direction in held_touch_directions.keys():
 		direction += held_direction as Vector2
 	touch_movement_changed.emit(direction.normalized() if direction != Vector2.ZERO else Vector2.ZERO)
+
+
+func _on_upgrade_button_pressed(index: int) -> void:
+	touch_upgrade_selected.emit(index)
+
+
+func _on_restart_button_pressed() -> void:
+	touch_restart_requested.emit()
 
 
 func _update_mobile_controls_visibility() -> void:
