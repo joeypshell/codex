@@ -49,6 +49,9 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 - Choose one of three upgrades after a floor clear to advance to the next floor.
 - Brighter Wings increases movement speed for the current run.
 - Moonlit Minute adds time to future floors for the current run.
+- Gentle Handling lowers fragile hazard penalties.
+- Lucky Satchel lowers normal hazard penalties.
+- Wide Glow increases pickup radius.
 - There is no final win state; the run continues until the timer reaches 0.
 - The first parcel is normal. Later parcels alternate between fragile and normal.
 - Fragile parcels are pink/yellow and use a matching carried-parcel indicator.

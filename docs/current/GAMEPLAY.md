@@ -31,6 +31,9 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Upgrade choices are stored in the current run state.
 - Brighter Wings increases player speed by 10% per stack, up to 3 stacks.
 - Moonlit Minute adds 8 seconds at each future floor start, up to 3 stacks.
+- Gentle Handling reduces fragile hazard penalties by 2 seconds per stack, up to 2 stacks.
+- Lucky Satchel reduces normal hazard penalties by 1 second per stack, up to 2 stacks.
+- Wide Glow increases pickup radius by 15% per stack, up to 2 stacks.
 - Upgrades that reach their stack cap stop appearing in the choice pool.
 - There is no final floor or final win state.
 - The run ends only when time reaches 0.

@@ -3,6 +3,7 @@ extends CharacterBody2D
 signal parcel_pickup(parcel: Area2D)
 
 const BASE_SPEED := 230.0
+const BASE_PICKUP_RADIUS := 24.0
 const PARCEL_TYPE_NORMAL := "normal"
 const PARCEL_TYPE_FRAGILE := "fragile"
 const CARRY_LIGHT_NORMAL := Color(0.62, 0.95, 1.0, 0.75)
@@ -17,6 +18,7 @@ var speed_multiplier := 1.0
 
 @onready var carry_light: Polygon2D = $CarryLight
 @onready var pickup_area: Area2D = $PickupArea
+@onready var pickup_collision: CollisionShape2D = $PickupArea/CollisionShape2D
 
 
 func _ready() -> void:
@@ -44,6 +46,13 @@ func update_carrying(is_carrying: bool, parcel_type := PARCEL_TYPE_NORMAL) -> vo
 
 func set_speed_multiplier(multiplier: float) -> void:
 	speed_multiplier = multiplier
+
+
+func set_pickup_radius_multiplier(multiplier: float) -> void:
+	var pickup_shape := pickup_collision.shape as CircleShape2D
+	if pickup_shape == null:
+		return
+	pickup_shape.radius = BASE_PICKUP_RADIUS * multiplier
 
 
 func reset_for_round(start_position: Vector2) -> void:

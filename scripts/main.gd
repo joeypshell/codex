@@ -31,16 +31,25 @@ const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 const UPGRADE_BRIGHTER_WINGS := "brighter_wings"
 const UPGRADE_MOONLIT_MINUTE := "moonlit_minute"
+const UPGRADE_GENTLE_HANDLING := "gentle_handling"
+const UPGRADE_LUCKY_SATCHEL := "lucky_satchel"
+const UPGRADE_WIDE_GLOW := "wide_glow"
 const BRIGHTER_WINGS_SPEED_BONUS := 0.10
 const BRIGHTER_WINGS_MAX_STACKS := 3
 const MOONLIT_MINUTE_TIME_BONUS := 8.0
 const MOONLIT_MINUTE_MAX_STACKS := 3
+const GENTLE_HANDLING_PENALTY_REDUCTION := 2.0
+const GENTLE_HANDLING_MAX_STACKS := 2
+const LUCKY_SATCHEL_PENALTY_REDUCTION := 1.0
+const LUCKY_SATCHEL_MAX_STACKS := 2
+const WIDE_GLOW_RADIUS_BONUS := 0.15
+const WIDE_GLOW_MAX_STACKS := 2
 const UPGRADE_POOL := [
 	{"id": UPGRADE_BRIGHTER_WINGS, "name": "Brighter Wings"},
 	{"id": UPGRADE_MOONLIT_MINUTE, "name": "Moonlit Minute"},
-	{"id": "gentle_handling", "name": "Gentle Handling"},
-	{"id": "lucky_satchel", "name": "Lucky Satchel"},
-	{"id": "wide_glow", "name": "Wide Glow"},
+	{"id": UPGRADE_GENTLE_HANDLING, "name": "Gentle Handling"},
+	{"id": UPGRADE_LUCKY_SATCHEL, "name": "Lucky Satchel"},
+	{"id": UPGRADE_WIDE_GLOW, "name": "Wide Glow"},
 ]
 
 @export var parcel_scene: PackedScene
@@ -280,12 +289,12 @@ func _apply_hazard_penalty() -> void:
 		return
 
 	hazard_hit_cooldown = HAZARD_HIT_COOLDOWN
-	var penalty := HAZARD_PENALTY
-	var event_text := "Hazard hit! -%d seconds" % int(HAZARD_PENALTY)
+	var penalty := _normal_hazard_penalty()
+	var event_text := "Hazard hit! -%d seconds" % int(penalty)
 	if player.carrying_parcel:
 		if player.carried_parcel_type == PARCEL_TYPE_FRAGILE:
-			penalty = FRAGILE_HAZARD_PENALTY
-			event_text = "Fragile parcel broke! -%d seconds" % int(FRAGILE_HAZARD_PENALTY)
+			penalty = _fragile_hazard_penalty()
+			event_text = "Fragile parcel broke! -%d seconds" % int(penalty)
 		player.update_carrying(false)
 		_spawn_next_parcel()
 	time_left = max(0.0, time_left - penalty)
@@ -354,6 +363,12 @@ func _upgrade_max_stacks(upgrade_id: String) -> int:
 			return BRIGHTER_WINGS_MAX_STACKS
 		UPGRADE_MOONLIT_MINUTE:
 			return MOONLIT_MINUTE_MAX_STACKS
+		UPGRADE_GENTLE_HANDLING:
+			return GENTLE_HANDLING_MAX_STACKS
+		UPGRADE_LUCKY_SATCHEL:
+			return LUCKY_SATCHEL_MAX_STACKS
+		UPGRADE_WIDE_GLOW:
+			return WIDE_GLOW_MAX_STACKS
 		_:
 			return 1
 
@@ -361,6 +376,18 @@ func _upgrade_max_stacks(upgrade_id: String) -> int:
 func _apply_upgrade_effects() -> void:
 	var speed_bonus := _upgrade_stack_count(UPGRADE_BRIGHTER_WINGS) * BRIGHTER_WINGS_SPEED_BONUS
 	player.set_speed_multiplier(1.0 + speed_bonus)
+	var pickup_bonus := _upgrade_stack_count(UPGRADE_WIDE_GLOW) * WIDE_GLOW_RADIUS_BONUS
+	player.set_pickup_radius_multiplier(1.0 + pickup_bonus)
+
+
+func _normal_hazard_penalty() -> float:
+	var reduction := _upgrade_stack_count(UPGRADE_LUCKY_SATCHEL) * LUCKY_SATCHEL_PENALTY_REDUCTION
+	return max(0.0, HAZARD_PENALTY - reduction)
+
+
+func _fragile_hazard_penalty() -> float:
+	var reduction := _upgrade_stack_count(UPGRADE_GENTLE_HANDLING) * GENTLE_HANDLING_PENALTY_REDUCTION
+	return max(0.0, FRAGILE_HAZARD_PENALTY - reduction)
 
 
 func _update_hud() -> void:
