@@ -45,7 +45,9 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 - Collect one parcel at a time.
 - Touch the mailbox while carrying a parcel to deliver it.
 - Deliver 5 parcels before the timer reaches 0 to win.
-- Touching a hazard drops your carried parcel and costs time.
+- The first parcel is normal. Later parcels alternate between fragile and normal.
+- Fragile parcels are pink/yellow and use a matching carried-parcel indicator.
+- Touching a hazard drops your carried parcel and costs time: 6 seconds for normal parcels, 12 seconds for fragile parcels.
 
 ## Project Shape
 

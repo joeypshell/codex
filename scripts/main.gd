@@ -14,6 +14,7 @@ const HAZARD_EVENT_COLOR := Color(1.0, 0.36, 0.36)
 const PARCEL_TYPE_NORMAL := "normal"
 const PARCEL_TYPE_FRAGILE := "fragile"
 const FIRST_FRAGILE_DELIVERY := 1
+const FRAGILE_DELIVERY_INTERVAL := 2
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 
@@ -115,7 +116,7 @@ func _spawn_next_parcel() -> void:
 func _next_parcel_type() -> String:
 	if deliveries < FIRST_FRAGILE_DELIVERY:
 		return PARCEL_TYPE_NORMAL
-	return PARCEL_TYPE_FRAGILE if deliveries % 2 == 1 else PARCEL_TYPE_NORMAL
+	return PARCEL_TYPE_FRAGILE if deliveries % FRAGILE_DELIVERY_INTERVAL == 1 else PARCEL_TYPE_NORMAL
 
 
 func _spawn_hazards() -> void:

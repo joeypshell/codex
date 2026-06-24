@@ -109,6 +109,13 @@ Verification:
 
 Summary: Tune the fragile parcel frequency and penalty after browser testing.
 
+Accepted tuning:
+
+- The first parcel in a round is normal.
+- After that, fragile parcels appear every other delivery.
+- A five-delivery win path includes two fragile parcels.
+- Normal hazard penalty is 6 seconds; fragile hazard penalty is 12 seconds.
+
 Acceptance criteria:
 
 - Fragile parcels feel noticeable but not constant.

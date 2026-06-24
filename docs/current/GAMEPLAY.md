@@ -15,12 +15,12 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - The timer waits on the start screen and starts when active play begins.
 - The player can carry one parcel at a time.
 - Parcels spawn at safe positions away from the player and mailbox.
-- The first parcel in a round is normal; later parcels alternate between fragile and normal parcels.
+- The first parcel in a round is normal; after that, fragile parcels appear every other delivery, so a five-delivery win path has two fragile parcels.
 - Fragile parcels use a pink/yellow visual treatment and carried-parcel indicator.
 - Picking up a parcel shows a short HUD cue.
 - Delivering a parcel to the mailbox increments the delivery count and spawns the next parcel.
 - Delivering a parcel shows a short HUD cue.
-- Hazards patrol the arena. Touching a hazard drops the carried parcel, spawns a replacement parcel, subtracts 6 seconds for a normal parcel or 12 seconds for a fragile parcel, and shows a short warning cue.
+- Hazards patrol the arena. Touching a hazard drops the carried parcel, spawns a replacement parcel, subtracts 6 seconds for a normal parcel or 12 seconds for a fragile parcel, and shows a short warning cue. This is the accepted first-pass tuning: fragile parcels are noticeable but not constant, and the stronger penalty is meaningful without ending a full round by itself.
 - The game ends in a win after 5 deliveries or a loss when time reaches 0.
 - Press `R` after a win/loss to return to the start screen for another round.
 
