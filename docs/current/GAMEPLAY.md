@@ -58,9 +58,9 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 ## Controls
 
 - Move: WASD or arrow keys
-- Move on mobile/touch: on-screen D-pad
+- Move on mobile/touch: touch anywhere in the play area and slide like a virtual thumbstick
 - Start run: Enter, Space, or any movement key
-- Start run on mobile/touch: press any D-pad direction
+- Start run on mobile/touch: touch and slide anywhere in the play area
 - Choose upgrade after floor clear: `1`, `2`, or `3`
 - Choose upgrade on mobile/touch: tap an upgrade button
 - Return to start screen after run over: `R`
@@ -92,8 +92,9 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Generated web output goes under `build/web` and should not be committed.
 - The expected public URL after a successful Pages deployment is `https://joeypshell.github.io/codex/`.
 - The web build uses responsive canvas scaling for desktop and mobile browser viewports.
-- Phone-sized browser play is supported as a web target, with touch controls tracked under the mobile web playability issues.
-- Mobile HUD layout keeps movement controls, upgrade/restart buttons, and central messages in separate screen regions so upgrade choices and run summaries stay readable.
+- Phone-sized browser play is supported as a web target, with touch-and-slide movement, tappable upgrade choices, and a tappable Restart button.
+- The web export shell is expected to fill the phone browser viewport in landscape instead of rendering as a small fixed-size canvas.
+- Mobile HUD layout keeps upgrade/restart buttons and central messages in separate screen regions so upgrade choices and run summaries stay readable.
 
 ## Verification
 
@@ -134,9 +135,9 @@ Mobile web smoke through GitHub Pages:
 
 - Open `https://joeypshell.github.io/codex/` on a phone browser.
 - Check portrait and landscape readability where practical.
-- Confirm the canvas is visible and not awkwardly cropped.
-- Start a run with the on-screen D-pad.
-- Move in all directions with touch controls.
+- Rotate to landscape and confirm the canvas fills the phone screen.
+- Start a run by touching and sliding anywhere in the play area.
+- Move in all directions by sliding from the touch start point.
 - Pick up a parcel and deliver it to the mailbox.
 - Clear a floor and choose an upgrade by tapping an upgrade button.
 - Let the timer expire and confirm the run-over summary is readable.

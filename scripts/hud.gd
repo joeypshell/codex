@@ -12,10 +12,6 @@ signal touch_restart_requested
 @onready var event_label: Label = $Root/EventLabel
 @onready var message_label: Label = $Root/MessageLabel
 @onready var mobile_controls: Control = $Root/MobileControls
-@onready var touch_up_button: Button = $Root/MobileControls/UpButton
-@onready var touch_down_button: Button = $Root/MobileControls/DownButton
-@onready var touch_left_button: Button = $Root/MobileControls/LeftButton
-@onready var touch_right_button: Button = $Root/MobileControls/RightButton
 @onready var action_controls: Control = $Root/ActionControls
 @onready var upgrade_buttons := [
 	$Root/ActionControls/UpgradeButton1,
@@ -24,15 +20,14 @@ signal touch_restart_requested
 ]
 @onready var restart_button: Button = $Root/ActionControls/RestartButton
 
+const TOUCH_DEADZONE := 14.0
+
 var event_time_left := 0.0
-var held_touch_directions := {}
+var movement_touch_index := -1
+var movement_touch_start := Vector2.ZERO
 
 
 func _ready() -> void:
-	_connect_touch_button(touch_up_button, Vector2.UP)
-	_connect_touch_button(touch_down_button, Vector2.DOWN)
-	_connect_touch_button(touch_left_button, Vector2.LEFT)
-	_connect_touch_button(touch_right_button, Vector2.RIGHT)
 	for index in range(upgrade_buttons.size()):
 		var button: Button = upgrade_buttons[index]
 		button.pressed.connect(_on_upgrade_button_pressed.bind(index))
@@ -49,6 +44,30 @@ func _process(delta: float) -> void:
 
 	event_time_left = max(0.0, event_time_left - delta)
 	event_label.modulate.a = min(1.0, event_time_left * 2.0)
+
+
+func _input(event: InputEvent) -> void:
+	if not _mobile_controls_enabled():
+		return
+
+	if event is InputEventScreenTouch:
+		var touch_event := event as InputEventScreenTouch
+		if touch_event.pressed:
+			if movement_touch_index == -1 and not _is_touch_on_action_controls(touch_event.position):
+				movement_touch_index = touch_event.index
+				movement_touch_start = touch_event.position
+				touch_start_requested.emit()
+				touch_movement_changed.emit(Vector2.ZERO)
+				get_viewport().set_input_as_handled()
+		elif touch_event.index == movement_touch_index:
+			movement_touch_index = -1
+			touch_movement_changed.emit(Vector2.ZERO)
+			get_viewport().set_input_as_handled()
+	elif event is InputEventScreenDrag:
+		var drag_event := event as InputEventScreenDrag
+		if drag_event.index == movement_touch_index:
+			touch_movement_changed.emit(_drag_direction(drag_event.position))
+			get_viewport().set_input_as_handled()
 
 
 func update_status(
@@ -136,29 +155,6 @@ func hide_action_controls() -> void:
 	restart_button.visible = false
 
 
-func _connect_touch_button(button: Button, direction: Vector2) -> void:
-	button.button_down.connect(_on_touch_button_down.bind(direction))
-	button.button_up.connect(_on_touch_button_up.bind(direction))
-
-
-func _on_touch_button_down(direction: Vector2) -> void:
-	held_touch_directions[direction] = true
-	touch_start_requested.emit()
-	_emit_touch_direction()
-
-
-func _on_touch_button_up(direction: Vector2) -> void:
-	held_touch_directions.erase(direction)
-	_emit_touch_direction()
-
-
-func _emit_touch_direction() -> void:
-	var direction := Vector2.ZERO
-	for held_direction in held_touch_directions.keys():
-		direction += held_direction as Vector2
-	touch_movement_changed.emit(direction.normalized() if direction != Vector2.ZERO else Vector2.ZERO)
-
-
 func _on_upgrade_button_pressed(index: int) -> void:
 	touch_upgrade_selected.emit(index)
 
@@ -168,10 +164,25 @@ func _on_restart_button_pressed() -> void:
 
 
 func _update_mobile_controls_visibility() -> void:
+	mobile_controls.visible = _mobile_controls_enabled()
+
+
+func _mobile_controls_enabled() -> bool:
 	var viewport_size := get_viewport().get_visible_rect().size
-	mobile_controls.visible = (
+	return (
 		DisplayServer.is_touchscreen_available()
 		or OS.has_feature("web_android")
 		or OS.has_feature("web_ios")
 		or viewport_size.x < 760.0
 	)
+
+
+func _is_touch_on_action_controls(position: Vector2) -> bool:
+	return action_controls.visible and action_controls.get_global_rect().has_point(position)
+
+
+func _drag_direction(position: Vector2) -> Vector2:
+	var offset := position - movement_touch_start
+	if offset.length() < TOUCH_DEADZONE:
+		return Vector2.ZERO
+	return offset.normalized()

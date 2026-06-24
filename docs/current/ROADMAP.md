@@ -21,7 +21,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 - Run over shows a summary with floor reached, total deliveries, and chosen upgrades.
 - Floors now choose from Layout A, Layout B, and Layout C while avoiding immediate repeats when possible.
 - The web build has responsive/mobile viewport settings.
-- Phone/touch play has on-screen movement, upgrade choice, and restart controls.
+- Phone/touch play has touch-and-slide movement, upgrade choice, and restart controls.
 - Mobile smoke-test steps are documented for GitHub Pages.
 - `tools/test-godot.ps1` runs automated rule tests for deterministic gameplay helpers.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
@@ -31,7 +31,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 
 The next version should continue improving mobile-friendly web play:
 
-- Test the live GitHub Pages build on real phones and tune layout/control placement from feedback.
+- Test the live GitHub Pages build on real phones and tune landscape fill, readability, and touch feel from feedback.
 - Keep broadening automated coverage when gameplay rules become harder to verify manually.
 
 ## Near-Term Epics
