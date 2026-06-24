@@ -51,10 +51,10 @@ The next version should continue improving mobile-friendly web play:
 
 ## Near-Term Issue Order
 
+- [#39 Design: choose mobile presentation strategy for phone web play](https://github.com/joeypshell/codex/issues/39)
+  Decide whether v1 mobile web play is landscape-first with a rotate prompt or a true portrait-responsive redesign.
 - [#35 Bug: mobile web viewport does not fit correctly in portrait and landscape](https://github.com/joeypshell/codex/issues/35)
   Fix the live mobile browser viewport behavior after real-phone testing showed portrait squishing and incomplete landscape fill.
-- [#37 Setup: install and verify Godot AI MCP for local Codex scene inspection](https://github.com/joeypshell/codex/issues/37)
-  Confirm the optional Godot AI MCP tool can connect locally and inspect a live Godot scene.
 - [#38 Tooling: use Godot AI MCP to inspect and debug the mobile viewport issue](https://github.com/joeypshell/codex/issues/38)
   Use the MCP on a real scene/UI debugging task and record whether it helps with #35.
 
