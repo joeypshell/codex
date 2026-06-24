@@ -55,6 +55,8 @@ The next version should continue improving mobile-friendly web play:
   Fix the live mobile browser viewport behavior after real-phone testing showed portrait squishing and incomplete landscape fill.
 - [#37 Setup: install and verify Godot AI MCP for local Codex scene inspection](https://github.com/joeypshell/codex/issues/37)
   Confirm the optional Godot AI MCP tool can connect locally and inspect a live Godot scene.
+- [#38 Tooling: use Godot AI MCP to inspect and debug the mobile viewport issue](https://github.com/joeypshell/codex/issues/38)
+  Use the MCP on a real scene/UI debugging task and record whether it helps with #35.
 
 ## Concrete Scaling Rules
 
