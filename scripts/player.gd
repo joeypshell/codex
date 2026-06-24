@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 signal parcel_pickup(parcel: Area2D)
 
-const SPEED := 230.0
+const BASE_SPEED := 230.0
 const PARCEL_TYPE_NORMAL := "normal"
 const PARCEL_TYPE_FRAGILE := "fragile"
 const CARRY_LIGHT_NORMAL := Color(0.62, 0.95, 1.0, 0.75)
@@ -13,6 +13,7 @@ const CARRY_LIGHT_FRAGILE := Color(1.0, 0.58, 0.82, 0.85)
 var carrying_parcel := false
 var carried_parcel_type := PARCEL_TYPE_NORMAL
 var active := true
+var speed_multiplier := 1.0
 
 @onready var carry_light: Polygon2D = $CarryLight
 @onready var pickup_area: Area2D = $PickupArea
@@ -29,7 +30,7 @@ func _physics_process(_delta: float) -> void:
 		return
 
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	velocity = direction * SPEED
+	velocity = direction * BASE_SPEED * speed_multiplier
 	move_and_slide()
 	global_position = global_position.clamp(arena_rect.position, arena_rect.position + arena_rect.size)
 
@@ -39,6 +40,10 @@ func update_carrying(is_carrying: bool, parcel_type := PARCEL_TYPE_NORMAL) -> vo
 	carried_parcel_type = parcel_type if is_carrying else PARCEL_TYPE_NORMAL
 	carry_light.visible = is_carrying
 	carry_light.color = CARRY_LIGHT_FRAGILE if carried_parcel_type == PARCEL_TYPE_FRAGILE else CARRY_LIGHT_NORMAL
+
+
+func set_speed_multiplier(multiplier: float) -> void:
+	speed_multiplier = multiplier
 
 
 func reset_for_round(start_position: Vector2) -> void:

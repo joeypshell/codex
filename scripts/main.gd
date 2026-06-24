@@ -29,9 +29,15 @@ const FRAGILE_CHANCE_PER_FLOOR := 0.08
 const MAX_FRAGILE_CHANCE := 0.75
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
+const UPGRADE_BRIGHTER_WINGS := "brighter_wings"
+const UPGRADE_MOONLIT_MINUTE := "moonlit_minute"
+const BRIGHTER_WINGS_SPEED_BONUS := 0.10
+const BRIGHTER_WINGS_MAX_STACKS := 3
+const MOONLIT_MINUTE_TIME_BONUS := 8.0
+const MOONLIT_MINUTE_MAX_STACKS := 3
 const UPGRADE_POOL := [
-	{"id": "brighter_wings", "name": "Brighter Wings"},
-	{"id": "moonlit_minute", "name": "Moonlit Minute"},
+	{"id": UPGRADE_BRIGHTER_WINGS, "name": "Brighter Wings"},
+	{"id": UPGRADE_MOONLIT_MINUTE, "name": "Moonlit Minute"},
 	{"id": "gentle_handling", "name": "Gentle Handling"},
 	{"id": "lucky_satchel", "name": "Lucky Satchel"},
 	{"id": "wide_glow", "name": "Wide Glow"},
@@ -113,6 +119,7 @@ func start_floor() -> void:
 	_clear_children(parcels)
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
+	_apply_upgrade_effects()
 	hud.clear_message()
 	_update_hud()
 	_spawn_hazards()
@@ -131,6 +138,7 @@ func show_start_screen() -> void:
 	_clear_children(parcels)
 	_clear_children(hazards)
 	player.reset_for_round(PLAYER_START)
+	_apply_upgrade_effects()
 	player.stop()
 	_update_hud()
 	hud.show_message("Firefly Courier\nDeliver 5 parcels to clear each floor.\nMove with WASD or arrows.\nPress Enter, Space, or move to start.")
@@ -197,7 +205,8 @@ func _spawn_hazards() -> void:
 
 
 func _floor_time() -> float:
-	return max(MIN_FLOOR_TIME, BASE_FLOOR_TIME - (floor_number * FLOOR_TIME_STEP))
+	var upgrade_bonus := _upgrade_stack_count(UPGRADE_MOONLIT_MINUTE) * MOONLIT_MINUTE_TIME_BONUS
+	return max(MIN_FLOOR_TIME, BASE_FLOOR_TIME - (floor_number * FLOOR_TIME_STEP)) + upgrade_bonus
 
 
 func _hazard_count() -> int:
@@ -310,7 +319,8 @@ func end_run() -> void:
 func _pick_upgrade_options() -> Array[Dictionary]:
 	var available_options: Array[Dictionary] = []
 	for upgrade in UPGRADE_POOL:
-		available_options.append(upgrade)
+		if _upgrade_stack_count(str(upgrade["id"])) < _upgrade_max_stacks(str(upgrade["id"])):
+			available_options.append(upgrade)
 
 	var options: Array[Dictionary] = []
 	while options.size() < 3 and not available_options.is_empty():
@@ -324,14 +334,37 @@ func _choose_upgrade(index: int) -> void:
 		return
 
 	var upgrade := pending_upgrade_options[index]
-	chosen_upgrades.append(str(upgrade["id"]))
+	var upgrade_id := str(upgrade["id"])
+	if _upgrade_stack_count(upgrade_id) >= _upgrade_max_stacks(upgrade_id):
+		return
+
+	chosen_upgrades.append(upgrade_id)
 	hud.show_event("Chose %s" % str(upgrade["name"]), UPGRADE_EVENT_COLOR)
 	pending_upgrade_options.clear()
 	advance_floor()
 
 
+func _upgrade_stack_count(upgrade_id: String) -> int:
+	return chosen_upgrades.count(upgrade_id)
+
+
+func _upgrade_max_stacks(upgrade_id: String) -> int:
+	match upgrade_id:
+		UPGRADE_BRIGHTER_WINGS:
+			return BRIGHTER_WINGS_MAX_STACKS
+		UPGRADE_MOONLIT_MINUTE:
+			return MOONLIT_MINUTE_MAX_STACKS
+		_:
+			return 1
+
+
+func _apply_upgrade_effects() -> void:
+	var speed_bonus := _upgrade_stack_count(UPGRADE_BRIGHTER_WINGS) * BRIGHTER_WINGS_SPEED_BONUS
+	player.set_speed_multiplier(1.0 + speed_bonus)
+
+
 func _update_hud() -> void:
-		hud.update_status(
+	hud.update_status(
 		floor_number,
 		best_floor,
 		deliveries,

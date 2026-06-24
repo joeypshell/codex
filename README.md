@@ -47,7 +47,8 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 - Touch the mailbox while carrying a parcel to deliver it.
 - Deliver 5 parcels before the timer reaches 0 to clear the current floor.
 - Choose one of three upgrades after a floor clear to advance to the next floor.
-- Upgrade choices are stored for the current run; upgrade effects are planned as later issues.
+- Brighter Wings increases movement speed for the current run.
+- Moonlit Minute adds time to future floors for the current run.
 - There is no final win state; the run continues until the timer reaches 0.
 - The first parcel is normal. Later parcels alternate between fragile and normal.
 - Fragile parcels are pink/yellow and use a matching carried-parcel indicator.

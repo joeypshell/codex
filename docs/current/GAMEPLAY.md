@@ -28,12 +28,15 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Completing 5 deliveries clears the current floor instead of ending the run.
 - The floor-clear screen shows three upgrade choices.
 - Press `1`, `2`, or `3` to choose an upgrade and start the next floor.
-- Upgrade choices are stored in the current run state, but they do not apply gameplay effects yet.
+- Upgrade choices are stored in the current run state.
+- Brighter Wings increases player speed by 10% per stack, up to 3 stacks.
+- Moonlit Minute adds 8 seconds at each future floor start, up to 3 stacks.
+- Upgrades that reach their stack cap stop appearing in the choice pool.
 - There is no final floor or final win state.
 - The run ends only when time reaches 0.
 - Press `R` after a run ends to return to the start screen for a fresh Floor 1 run.
 - Total deliveries reset for each fresh run.
-- Chosen upgrades reset for each fresh run.
+- Chosen upgrades and their effects reset for each fresh run.
 - Best floor is kept only in memory for the current browser session; there is no persistent save data.
 
 ## Floor Scaling
