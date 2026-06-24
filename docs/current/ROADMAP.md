@@ -36,7 +36,7 @@ The next version should make the web build mobile-friendly:
 
 ## Near-Term Epics
 
-- Mobile web playability
+- [#29 Epic: Mobile web playability](https://github.com/joeypshell/codex/issues/29)
   Add responsive/mobile HUD behavior, touch movement controls, touch upgrade/restart controls, and mobile smoke-test docs.
 - [#13 Epic: Infinite roguelike run foundation](https://github.com/joeypshell/codex/issues/13)
   Add endless floors, floor advancement, formula-driven difficulty, and floor-based fragile parcel scaling.
@@ -49,12 +49,11 @@ The next version should make the web build mobile-friendly:
 
 ## Near-Term Issue Order
 
-1. Create mobile web playability epic.
-2. Add responsive web/mobile viewport settings.
-3. Add touch movement controls for phones.
-4. Add touch controls for upgrade choices and restart.
-5. Add mobile HUD/layout polish.
-6. Document mobile smoke testing.
+1. [#30 Add responsive web/mobile viewport settings](https://github.com/joeypshell/codex/issues/30)
+2. [#31 Add touch movement controls for phones](https://github.com/joeypshell/codex/issues/31)
+3. [#32 Add touch controls for upgrade choices and restart](https://github.com/joeypshell/codex/issues/32)
+4. [#33 Polish HUD and message layout for mobile](https://github.com/joeypshell/codex/issues/33)
+5. [#34 Document mobile smoke testing](https://github.com/joeypshell/codex/issues/34)
 
 ## Concrete Scaling Rules
 
