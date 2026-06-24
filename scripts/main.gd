@@ -23,6 +23,9 @@ const PARCEL_TYPE_NORMAL := "normal"
 const PARCEL_TYPE_FRAGILE := "fragile"
 const FIRST_FRAGILE_DELIVERY := 1
 const FRAGILE_DELIVERY_INTERVAL := 2
+const BASE_FRAGILE_CHANCE := 0.25
+const FRAGILE_CHANCE_PER_FLOOR := 0.08
+const MAX_FRAGILE_CHANCE := 0.75
 const PLAYER_START := Vector2(110, 438)
 const ARENA_RECT := Rect2(Vector2(52, 58), Vector2(856, 410))
 
@@ -141,9 +144,15 @@ func _spawn_next_parcel() -> void:
 
 
 func _next_parcel_type() -> String:
+	if floor_number >= 2:
+		return PARCEL_TYPE_FRAGILE if rng.randf() < _fragile_parcel_chance() else PARCEL_TYPE_NORMAL
 	if deliveries < FIRST_FRAGILE_DELIVERY:
 		return PARCEL_TYPE_NORMAL
 	return PARCEL_TYPE_FRAGILE if deliveries % FRAGILE_DELIVERY_INTERVAL == 1 else PARCEL_TYPE_NORMAL
+
+
+func _fragile_parcel_chance() -> float:
+	return min(MAX_FRAGILE_CHANCE, BASE_FRAGILE_CHANCE + (floor_number * FRAGILE_CHANCE_PER_FLOOR))
 
 
 func _spawn_hazards() -> void:

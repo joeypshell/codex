@@ -17,7 +17,9 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - The HUD shows the current floor, deliveries, timer, and carried parcel state.
 - The player can carry one parcel at a time.
 - Parcels spawn at safe positions away from the player and mailbox.
-- The first parcel in a round is normal; after that, fragile parcels appear every other delivery, so a five-delivery win path has two fragile parcels.
+- Floor 1 keeps a deterministic fragile parcel pattern after deliveries `1` and `3`.
+- Floor 2+ rolls fragile parcels with `min(0.75, 0.25 + floor_number * 0.08)` chance for each spawn.
+- Normal parcels can still appear on later floors.
 - Fragile parcels use a pink/yellow visual treatment and carried-parcel indicator.
 - Picking up a parcel shows a short HUD cue.
 - Delivering a parcel to the mailbox increments the delivery count and spawns the next parcel.
@@ -35,6 +37,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Hazard count: `min(6, 3 + floor_number / 3)` using whole-floor steps.
 - Hazard speed multiplier: `min(1.8, 1.0 + floor_number * 0.08)`.
 - Deliveries required stays fixed at 5.
+- Floor 1 fragile parcels are deterministic; Floor 2+ fragile parcels use the floor-based chance.
 - Hazard penalty rules stay the same across floors.
 
 ## Controls
@@ -91,5 +94,6 @@ Manual smoke:
 - Touch a hazard while carrying a parcel and confirm the penalty.
 - Deliver 5 parcels and confirm the floor-clear state.
 - Press Enter or Space after floor clear and confirm Floor 2 starts.
+- Confirm fragile parcels appear more often on later floors but normal parcels still appear.
 - Let the timer expire and confirm the run-over state.
 - Press `R` after run over and confirm the start screen returns with Floor 1.
