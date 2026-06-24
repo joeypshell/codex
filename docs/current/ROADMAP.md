@@ -34,6 +34,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 The next version should continue improving mobile-friendly web play:
 
 - Treat v1 mobile web play as landscape-first, with portrait mode guiding players to rotate instead of supporting full portrait gameplay.
+- Add PWA/install support so phone landscape play can use less browser chrome where mobile browsers allow it.
 - Test the live GitHub Pages build on real phones and tune landscape fill, readability, and touch feel from feedback.
 - Keep broadening automated coverage when gameplay rules become harder to verify manually.
 - Use optional Godot AI MCP tooling on scene-heavy issues when it is available locally.
@@ -53,8 +54,10 @@ The next version should continue improving mobile-friendly web play:
 
 ## Near-Term Issue Order
 
+- [#41 Feature: add PWA install support for mobile landscape play](https://github.com/joeypshell/codex/issues/41)
+  Enable and document an installable web app path so landscape play can avoid normal browser chrome where supported.
 - [#35 Bug: mobile web viewport does not fit correctly in portrait and landscape](https://github.com/joeypshell/codex/issues/35)
-  Fix or narrow the live mobile browser viewport behavior using the landscape-first decision from #39.
+  Narrow remaining viewport/browser-chrome limitations after the landscape-first and PWA paths are tested on a real phone.
 - [#38 Tooling: use Godot AI MCP to inspect and debug the mobile viewport issue](https://github.com/joeypshell/codex/issues/38)
   Use the MCP on a real scene/UI debugging task and record whether it helps with #35.
 
