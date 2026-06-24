@@ -55,6 +55,8 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 
 After mobile-related changes, smoke test the GitHub Pages build from a phone in portrait and landscape. Confirm portrait shows a rotate prompt, landscape is readable in the available browser viewport, touch-and-slide movement works, upgrades can be tapped, and Restart works from the run-over screen.
 
+The web export is installable as a PWA. On a phone browser, use **Add to Home Screen** or **Install app** when available, then launch Firefly Courier from the home screen for a standalone landscape-first experience with less browser chrome on supported browsers.
+
 ## Game Rules
 
 - Collect one parcel at a time.

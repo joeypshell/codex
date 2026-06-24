@@ -97,7 +97,8 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Landscape mode should preserve a readable 16:9 game view and fill the available browser viewport as consistently as practical.
 - Phone-sized browser play is supported as a web target, with touch-and-slide movement, tappable upgrade choices, and a tappable Restart button.
 - The web export shell is expected to fill the phone browser viewport in landscape instead of rendering as a small fixed-size canvas. Browser URL bars may remain visible unless the browser allows fullscreen from the first touch or the game is launched as an installed web app.
-- PWA/install support is the planned path for reducing normal mobile browser chrome; normal browser tabs may still show the URL bar.
+- PWA/install support is enabled for the web export. The PWA uses standalone display mode, prefers landscape orientation, and uses the project icon as the source for generated web app icons.
+- Normal browser tabs may still show the URL bar; installing or adding the game to the home screen is the preferred phone play path where supported.
 - Mobile HUD layout keeps upgrade/restart buttons and central messages in separate screen regions so upgrade choices and run summaries stay readable.
 
 ## Verification
@@ -140,6 +141,7 @@ Mobile web smoke through GitHub Pages:
 - Open `https://joeypshell.github.io/codex/` on a phone browser.
 - Check that portrait mode directs the player to rotate instead of showing squished gameplay.
 - Rotate to landscape and confirm the game is readable and fills the available browser viewport as much as practical.
+- Install the game with Add to Home Screen or Install app when available, launch it from the home screen, and confirm it uses less browser chrome than a normal tab where supported.
 - On browsers that allow it, touch the game once and confirm fullscreen mode hides browser chrome.
 - Start a run by touching and sliding anywhere in the play area.
 - Move in all directions by sliding from the touch start point.
