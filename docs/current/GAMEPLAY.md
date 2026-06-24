@@ -58,7 +58,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 ## Controls
 
 - Move: WASD or arrow keys
-- Move on mobile/touch: touch anywhere in the play area and slide like a virtual thumbstick
+- Move on mobile/touch: touch anywhere in the play area and slide like an analog thumbstick
 - Start run: Enter, Space, or any movement key
 - Start run on mobile/touch: touch and slide anywhere in the play area
 - Choose upgrade after floor clear: `1`, `2`, or `3`
@@ -96,6 +96,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Portrait phone gameplay is out of scope for now; portrait mode shows a rotate prompt instead of trying to run a squished game view.
 - Landscape mode should preserve a readable 16:9 game view and fill the available browser viewport as consistently as practical.
 - Phone-sized browser play is supported as a web target, with touch-and-slide movement, tappable upgrade choices, and a tappable Restart button.
+- Movement is tuned to respond directly on keyboard, reset cleanly between floors/runs, and use a small touch deadzone with analog slide strength on mobile.
 - The web export shell is expected to fill the phone browser viewport in landscape instead of rendering as a small fixed-size canvas. Browser URL bars may remain visible unless the browser allows fullscreen from the first touch or the game is launched as an installed web app.
 - PWA/install support is enabled for the web export. The PWA uses standalone display mode, prefers landscape orientation, and uses the project icon as the source for generated web app icons.
 - Normal browser tabs may still show the URL bar; installing or adding the game to the home screen is the preferred phone play path where supported.

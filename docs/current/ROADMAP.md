@@ -22,6 +22,7 @@ Current direction: evolve Firefly Courier from a one-screen delivery arcade game
 - Floors now choose from Layout A, Layout B, and Layout C while avoiding immediate repeats when possible.
 - The web build has responsive/mobile viewport settings.
 - Phone/touch play has touch-and-slide movement, upgrade choice, and restart controls.
+- Player movement is tuned for direct keyboard response and analog touch-slide control.
 - Mobile web play is landscape-first for v1 and shows a rotate prompt in portrait.
 - The web export is PWA-enabled with standalone display and landscape orientation preference.
 - Mobile smoke-test steps are documented for GitHub Pages.
@@ -54,10 +55,8 @@ The next version should continue improving mobile-friendly web play:
 
 ## Near-Term Issue Order
 
-- [#35 Bug: mobile web viewport does not fit correctly in portrait and landscape](https://github.com/joeypshell/codex/issues/35)
-  Narrow remaining viewport/browser-chrome limitations after the landscape-first and PWA paths are tested on a real phone.
 - [#38 Tooling: use Godot AI MCP to inspect and debug the mobile viewport issue](https://github.com/joeypshell/codex/issues/38)
-  Use the MCP on a real scene/UI debugging task and record whether it helps with #35.
+  Repurpose this as a later MCP trial on a real scene/UI debugging task.
 
 ## Concrete Scaling Rules
 

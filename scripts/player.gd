@@ -2,13 +2,13 @@ extends CharacterBody2D
 
 signal parcel_pickup(parcel: Area2D)
 
-const BASE_SPEED := 230.0
 const BASE_PICKUP_RADIUS := 24.0
 const PARCEL_TYPE_NORMAL := "normal"
 const PARCEL_TYPE_FRAGILE := "fragile"
 const CARRY_LIGHT_NORMAL := Color(0.62, 0.95, 1.0, 0.75)
 const CARRY_LIGHT_FRAGILE := Color(1.0, 0.58, 0.82, 0.85)
 
+@export var base_speed := 260.0
 @export var arena_rect := Rect2(Vector2(24, 24), Vector2(912, 492))
 
 var carrying_parcel := false
@@ -35,7 +35,7 @@ func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if touch_direction != Vector2.ZERO:
 		direction = touch_direction
-	velocity = direction * BASE_SPEED * speed_multiplier
+	velocity = direction * base_speed * speed_multiplier
 	move_and_slide()
 	global_position = global_position.clamp(arena_rect.position, arena_rect.position + arena_rect.size)
 
@@ -64,6 +64,8 @@ func set_pickup_radius_multiplier(multiplier: float) -> void:
 
 func reset_for_round(start_position: Vector2) -> void:
 	global_position = start_position
+	velocity = Vector2.ZERO
+	touch_direction = Vector2.ZERO
 	active = true
 	update_carrying(false)
 

@@ -21,7 +21,8 @@ signal touch_restart_requested
 ]
 @onready var restart_button: Button = $Root/ActionControls/RestartButton
 
-const TOUCH_DEADZONE := 14.0
+const TOUCH_DEADZONE := 18.0
+const TOUCH_FULL_STRENGTH_DISTANCE := 56.0
 
 var event_time_left := 0.0
 var movement_touch_index := -1
@@ -195,6 +196,12 @@ func _is_touch_on_action_controls(position: Vector2) -> bool:
 
 func _drag_direction(position: Vector2) -> Vector2:
 	var offset := position - movement_touch_start
-	if offset.length() < TOUCH_DEADZONE:
+	var distance := offset.length()
+	if distance < TOUCH_DEADZONE:
 		return Vector2.ZERO
-	return offset.normalized()
+	var strength := clampf(
+		(distance - TOUCH_DEADZONE) / (TOUCH_FULL_STRENGTH_DISTANCE - TOUCH_DEADZONE),
+		0.0,
+		1.0
+	)
+	return offset.normalized() * strength

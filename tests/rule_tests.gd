@@ -5,13 +5,16 @@ var failures := 0
 
 func _initialize() -> void:
 	var main = load("res://scripts/main.gd").new()
+	var hud = load("res://scripts/hud.gd").new()
 
 	_test_floor_time(main)
 	_test_fragile_rules(main)
 	_test_hazard_penalties(main)
 	_test_upgrade_caps(main)
 	_test_layout_selection(main)
+	_test_touch_direction(hud)
 	main.free()
+	hud.free()
 
 	if failures > 0:
 		printerr("%d rule test(s) failed." % failures)
@@ -82,6 +85,12 @@ func _test_layout_selection(main: Node) -> void:
 	_assert_true(first_layout in ["A", "B", "C"], "First layout is known")
 	_assert_true(second_layout in ["A", "B", "C"], "Second layout is known")
 	_assert_true(first_layout != second_layout, "Layouts avoid immediate repeats")
+
+
+func _test_touch_direction(hud: CanvasLayer) -> void:
+	hud.movement_touch_start = Vector2(100, 100)
+	_assert_equal(hud._drag_direction(Vector2(112, 100)), Vector2.ZERO, "Touch deadzone ignores small drags")
+	_assert_true(hud._drag_direction(Vector2(156, 100)).is_equal_approx(Vector2.RIGHT), "Touch reaches full strength")
 
 
 func _assert_equal(actual, expected, label: String) -> void:
