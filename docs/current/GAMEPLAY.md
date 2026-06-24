@@ -93,6 +93,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - The expected public URL after a successful Pages deployment is `https://joeypshell.github.io/codex/`.
 - The web build uses responsive canvas scaling for desktop and mobile browser viewports.
 - Phone-sized browser play is supported as a web target, with touch controls tracked under the mobile web playability issues.
+- Mobile HUD layout keeps movement controls, upgrade/restart buttons, and central messages in separate screen regions so upgrade choices and run summaries stay readable.
 
 ## Verification
 

@@ -80,7 +80,8 @@ func show_message(message: String) -> void:
 
 func show_upgrade_choices(floor_number: int, next_floor: int, options: Array[Dictionary]) -> void:
 	var lines: Array[String] = [
-		"Floor %d clear! Choose an upgrade for Floor %d:" % [floor_number, next_floor]
+		"Floor %d clear!" % floor_number,
+		"Choose an upgrade for Floor %d:" % next_floor,
 	]
 	for index in range(options.size()):
 		lines.append("%d. %s" % [index + 1, str(options[index]["name"])])
@@ -108,7 +109,8 @@ func show_run_summary(floor_number: int, total_deliveries: int, upgrades: Array[
 	if upgrades.is_empty():
 		lines.append("Upgrades: none")
 	else:
-		lines.append("Upgrades: %s" % ", ".join(upgrades))
+		lines.append("Upgrades:")
+		lines.append(", ".join(upgrades))
 	lines.append("Press R or tap Restart.")
 	message_label.text = "\n".join(lines)
 	action_controls.visible = true
