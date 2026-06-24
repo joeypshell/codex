@@ -1,119 +1,84 @@
 # Current Roadmap
 
-This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remain the active task contract; this file explains what should be tackled next and what should stay out of scope for now.
+This roadmap is a compact guide for issue-driven Codex work. GitHub Issues remain the active task contract; this file explains what should be tackled next and what should stay out of scope.
 
-Current direction: finish and polish the current one-screen browser game before expanding it.
+Current direction: evolve Firefly Courier from a one-screen delivery arcade game into an endless, browser-playable roguelike courier run.
 
 ## Current Playable State
 
 - Firefly Courier is a one-screen Godot 4.7 arcade game.
 - The player moves with WASD or arrow keys.
 - The player collects one parcel at a time and delivers it to the mailbox.
-- Hazards patrol the arena and apply a time/drop penalty.
-- The game has win, loss, and restart states.
+- Normal and fragile parcels appear during a round.
+- Hazards patrol the arena and apply normal or fragile parcel penalties.
+- The game has start, win, loss, and restart states.
 - GitHub Actions exports the web build and publishes it through GitHub Pages.
+- `tools/verify-godot.ps1` provides a repeatable local Godot scene/export check.
 
-## V1 Finish Line
+## Next Product Direction
 
-The first version is "done enough" when:
+The next version should become an endless roguelike run:
 
-- The public GitHub Pages build is live and playable.
-- A first-time player can understand the goal and controls without reading the README.
-- Pickup, delivery, hazard contact, win, loss, and restart all have clear feedback.
-- Future agents can run one documented verification path before reporting completion.
-- `docs/current/GAMEPLAY.md` matches the accepted playable behavior.
+- The run starts on Floor 1.
+- Each floor requires 5 deliveries.
+- Completing a floor advances to the next floor instead of ending the game.
+- There is no final floor or final win state.
+- The timer reaching 0 ends the run.
+- Restart begins a fresh run at Floor 1.
+- Between floors, the player will eventually choose temporary upgrades that last only for the current run.
 
 ## Near-Term Epics
 
-- [#6 V1 playable browser polish](https://github.com/joeypshell/codex/issues/6)
-  Finish the current web-playable game before adding new systems.
-- [#7 Repeatable Godot verification workflow](https://github.com/joeypshell/codex/issues/7)
-  Add one documented verification path for scene-load and web-export checks.
-- [#8 First post-V1 gameplay expansion](https://github.com/joeypshell/codex/issues/8)
-  Plan one small gameplay expansion after V1 is complete.
+- [#13 Epic: Infinite roguelike run foundation](https://github.com/joeypshell/codex/issues/13)
+  Add endless floors, floor advancement, formula-driven difficulty, and floor-based fragile parcel scaling.
+- [#14 Epic: Upgrade choices between floors](https://github.com/joeypshell/codex/issues/14)
+  Add temporary current-run upgrades chosen between floors.
+- [#15 Epic: Endless run scoring and summary](https://github.com/joeypshell/codex/issues/15)
+  Show current floor, total deliveries, session best, and run-over summary.
+- [#16 Epic: Arena layout variety](https://github.com/joeypshell/codex/issues/16)
+  Add fixed layout presets and choose layouts per floor before procedural generation.
 
 ## Near-Term Issue Order
 
-1. [#1 Verify the public GitHub Pages build is live and playable.](https://github.com/joeypshell/codex/issues/1)
-2. [#3 Add a start screen with concise goal and control instructions.](https://github.com/joeypshell/codex/issues/3)
-3. [#2 Add small feedback cues for pickup, delivery, hazard contact, and end states.](https://github.com/joeypshell/codex/issues/2)
-4. [#4 Add a repeatable local verification command for scene-load and web-export checks.](https://github.com/joeypshell/codex/issues/4)
-5. [#5 Plan one gameplay expansion slice after the current game feels complete.](https://github.com/joeypshell/codex/issues/5)
+1. [#17 Add floor state](https://github.com/joeypshell/codex/issues/17)
+2. [#18 Advance floors instead of winning](https://github.com/joeypshell/codex/issues/18)
+3. [#19 Add floor difficulty formula](https://github.com/joeypshell/codex/issues/19)
+4. [#20 Add floor-based fragile parcel chance](https://github.com/joeypshell/codex/issues/20)
+5. [#21 Add upgrade choice screen between floors](https://github.com/joeypshell/codex/issues/21)
+6. [#24 Add run score HUD](https://github.com/joeypshell/codex/issues/24)
+7. [#26 Introduce layout preset data](https://github.com/joeypshell/codex/issues/26)
+
+## Concrete Scaling Rules
+
+- Floor timer: `max(35, 60 - floor_number * 2)` seconds.
+- Hazard count: `min(6, 3 + floor_number / 3)`.
+- Hazard speed multiplier: `min(1.8, 1.0 + floor_number * 0.08)`.
+- Deliveries required: always 5 for now.
+- Floor 1 fragile parcels: keep deterministic fragile deliveries after deliveries `1` and `3`.
+- Floor 2+ fragile parcel chance: `min(0.75, 0.25 + floor_number * 0.08)`.
+
+## Upgrade Pool
+
+- Brighter Wings: player speed +10%, max 3 stacks.
+- Moonlit Minute: +8 seconds at the start of each floor, max 3 stacks.
+- Gentle Handling: fragile hazard penalty -2 seconds, max 2 stacks.
+- Lucky Satchel: normal hazard penalty -1 second, max 2 stacks.
+- Wide Glow: pickup radius +15%, max 2 stacks.
 
 ## Out Of Scope For Now
 
-- Save data, accounts, shops, currencies, or progression systems.
+- Persistent save data, accounts, shops, currencies, or long-term progression systems.
+- Procedural map generation before fixed layout presets work.
 - Large custom art or audio asset production.
 - Mobile/touch controls.
-- Multiple worlds, dialogue, inventory, or NPC systems.
+- Dialogue, inventory, NPC systems, or combat.
 - Major scene/script refactors without a specific issue.
-
-## What Makes A Good First Codex Issue
-
-- It changes one small behavior or one small doc/process surface.
-- It names exact files or scene areas to inspect first.
-- It has observable acceptance criteria.
-- It includes verification steps that can be run locally.
-- It avoids broad design decisions unless the issue is explicitly a planning task.
-
-## Suggested First Issues
-
-### [#1 Verify GitHub Pages Web Deployment](https://github.com/joeypshell/codex/issues/1)
-
-Acceptance criteria:
-
-- GitHub Pages uses GitHub Actions as its source.
-- The Deploy Web workflow succeeds on `main`.
-- `https://joeypshell.github.io/codex/` loads the game.
-- Keyboard input works in the browser.
-
-Verification:
-
-- Inspect the Deploy Web workflow result.
-- Open the public Pages URL.
-- Manual smoke: move, collect a parcel, deliver it, and restart after an end state.
-
-### [#3 Add Start Screen And Concise Instructions](https://github.com/joeypshell/codex/issues/3)
-
-Acceptance criteria:
-
-- The game shows the goal and controls before play begins.
-- The timer waits until the player starts the round.
-- Active play, win, loss, and restart still work.
-
-Verification:
-
-- Open `project.godot` in Godot 4.7 and run the game.
-- Confirm the timer waits on the start screen.
-- Confirm active play and restart behavior still work.
-
-### [#2 Add Basic Game-Feel Feedback](https://github.com/joeypshell/codex/issues/2)
-
-Acceptance criteria:
-
-- Parcel pickup has a visible cue.
-- Mailbox delivery has a visible cue.
-- Hazard contact clearly communicates the penalty.
-- Win and loss messages remain readable.
-
-Verification:
-
-- Run the main scene in Godot.
-- Manual smoke: pickup, delivery, hazard contact, win, loss, restart.
-- Update `docs/current/GAMEPLAY.md` if accepted visible behavior changes.
-
-## After V1
-
-Once the finish line is met, plan exactly one expansion slice. Good candidates:
-
-- A new parcel type with a simple delivery rule.
-
-The selected first expansion is documented in `docs/planning/first-gameplay-expansion.md`: add fragile parcels as one new parcel type that reuses the current delivery loop.
 
 ## Later Tooling Evaluation
 
-- Evaluate the Godot AI MCP plugin after the fragile parcel slice or before a scene-heavy polish issue. Treat it as an editor-assist tool for inspecting scenes, screenshots, UI, particles, and node setup, not as a replacement for the GitHub issue workflow.
+- Evaluate the Godot AI MCP plugin before a scene-heavy polish issue. Treat it as an editor-assist tool for inspecting scenes, screenshots, UI, particles, and node setup, not as a replacement for the GitHub issue workflow.
 
 ## Later Testing Work
 
-- Add automated Godot tests after the fragile parcel slice is stable. Start with small checks for parcel spawn order, hazard penalties, win/loss state, and restart reset behavior before expanding test coverage.
+- [#28 Add first automated Godot tests](https://github.com/joeypshell/codex/issues/28)
+  Start with small checks for floor config lookup, fragile parcel rules, hazard penalties, and restart reset behavior.
