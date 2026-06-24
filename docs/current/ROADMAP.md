@@ -107,7 +107,6 @@ Verification:
 
 Once the finish line is met, plan exactly one expansion slice. Good candidates:
 
-- A second arena with one new layout constraint.
 - A new parcel type with a simple delivery rule.
-- A gentle score/combo system that rewards clean deliveries.
-- A new hazard pattern that reuses the existing hazard scene/script shape.
+
+The selected first expansion is documented in `docs/planning/first-gameplay-expansion.md`: add fragile parcels as one new parcel type that reuses the current delivery loop.

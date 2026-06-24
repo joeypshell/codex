@@ -24,10 +24,18 @@ Outcome: agents have one documented local path for checking scene load and web e
 
 ### [#8 Epic: First post-V1 gameplay expansion](https://github.com/joeypshell/codex/issues/8)
 
-Outcome: after the V1 finish line, choose one small expansion and split it into agent-sized implementation issues.
+Outcome: add fragile parcels as the first gameplay expansion, split into agent-sized implementation issues.
 
 - [#5 Plan the first gameplay expansion slice](https://github.com/joeypshell/codex/issues/5)
   Plan the next small gameplay expansion before implementation.
+- [#9 Add parcel type state](https://github.com/joeypshell/codex/issues/9)
+  Add normal/fragile parcel state and a visible fragile parcel distinction.
+- [#10 Spawn fragile parcels occasionally](https://github.com/joeypshell/codex/issues/10)
+  Introduce fragile parcels into the round after the base delivery loop is established.
+- [#11 Add fragile parcel hazard penalty](https://github.com/joeypshell/codex/issues/11)
+  Make hazard contact riskier when carrying a fragile parcel.
+- [#12 Tune and document fragile parcels](https://github.com/joeypshell/codex/issues/12)
+  Tune frequency/penalty and document the accepted behavior.
 
 ## Suggested Order
 
@@ -35,7 +43,7 @@ Outcome: after the V1 finish line, choose one small expansion and split it into 
 2. Add #3 so a first-time browser player can understand the game in-game.
 3. Add #2 for the smallest player-facing polish pass.
 4. Do #4 when verification friction starts slowing future work.
-5. Use #5 only after the V1 playable browser polish epic is complete.
+5. Use #9 as the first fragile-parcel implementation issue.
 
 ## Rules
 
