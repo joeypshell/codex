@@ -14,6 +14,22 @@ Firefly Courier is a tiny 2D cozy arcade game built in Godot 4.7 with GDScript. 
 2. Open Godot and import this repository by selecting `project.godot`.
 3. Press Play.
 
+## Local Verification
+
+When Godot is available locally, run the scene-load and web-export check with:
+
+```powershell
+.\tools\verify-godot.ps1
+```
+
+If Godot is not on PATH, pass the executable path:
+
+```powershell
+.\tools\verify-godot.ps1 -GodotBin "C:\path\to\Godot.exe"
+```
+
+The script writes export output under `build/web`, which is ignored by git.
+
 ## Play on the Web
 
 The `Deploy Web` GitHub Actions workflow exports the game for the web and publishes it with GitHub Pages whenever `main` changes.
@@ -35,6 +51,7 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 
 - `scenes/` contains Godot scene files.
 - `scripts/` contains GDScript behavior.
+- `tools/verify-godot.ps1` runs the local Godot scene-load and web-export verification.
 - `docs/current/GAMEPLAY.md` describes the current implemented gameplay and verification expectations.
 - `docs/current/ROADMAP.md` describes the near-term issue-driven roadmap.
 - `docs/BACKLOG.md` links the first GitHub issue backlog.

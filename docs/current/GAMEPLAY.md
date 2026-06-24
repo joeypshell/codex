@@ -59,9 +59,10 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 Preferred checks when Godot is available:
 
 ```powershell
-godot --headless --path . --scene res://scenes/Main.tscn --quit-after 5
-godot --headless --path . --export-release Web build/web/index.html
+.\tools\verify-godot.ps1
 ```
+
+Use `.\tools\verify-godot.ps1 -GodotBin "C:\path\to\Godot.exe"` if Godot is not on PATH. The script writes web export output under ignored `build/web`.
 
 Manual smoke:
 

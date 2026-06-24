@@ -13,6 +13,7 @@ Keep guidance practical and compact. Add rules only when they prevent repeated m
 - GDScript source: `scripts/`
 - Web export preset: `export_presets.cfg`
 - GitHub Actions: `.github/workflows/`
+- Local verification wrapper: `tools/verify-godot.ps1`
 - Current-state gameplay docs: `docs/current/`
 - Backlog snapshot: `docs/BACKLOG.md`; live task state stays in GitHub Issues
 - Agent workflow docs: `docs/GITHUB_ISSUE_WORKFLOW.md`, `docs/AGENT_HANDOFF_TEMPLATE.md`
@@ -58,8 +59,13 @@ For broad features, write a compact plan under `docs/planning/` before implement
 Preferred checks when Godot is available:
 
 ```powershell
-godot --headless --path . --scene res://scenes/Main.tscn --quit-after 5
-godot --headless --path . --export-release Web build/web/index.html
+.\tools\verify-godot.ps1
+```
+
+If Godot is not on PATH, pass an explicit binary path:
+
+```powershell
+.\tools\verify-godot.ps1 -GodotBin "C:\path\to\Godot.exe"
 ```
 
 Manual checks:
