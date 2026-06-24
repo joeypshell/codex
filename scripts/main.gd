@@ -322,7 +322,7 @@ func end_run() -> void:
 	best_floor = max(best_floor, floor_number)
 	player.stop()
 	_update_hud()
-	hud.show_message("Run ended on Floor %d.\nPress R to start a fresh run." % floor_number)
+	hud.show_run_summary(floor_number, total_deliveries, _chosen_upgrade_summary())
 
 
 func _pick_upgrade_options() -> Array[Dictionary]:
@@ -351,6 +351,18 @@ func _choose_upgrade(index: int) -> void:
 	hud.show_event("Chose %s" % str(upgrade["name"]), UPGRADE_EVENT_COLOR)
 	pending_upgrade_options.clear()
 	advance_floor()
+
+
+func _chosen_upgrade_summary() -> Array[String]:
+	var summary: Array[String] = []
+	for upgrade in UPGRADE_POOL:
+		var upgrade_id := str(upgrade["id"])
+		var count := _upgrade_stack_count(upgrade_id)
+		if count <= 0:
+			continue
+		var upgrade_name := str(upgrade["name"])
+		summary.append("%s x%d" % [upgrade_name, count])
+	return summary
 
 
 func _upgrade_stack_count(upgrade_id: String) -> int:

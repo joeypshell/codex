@@ -37,6 +37,7 @@ Firefly Courier is a one-screen cozy arcade game built in Godot 4.7 with GDScrip
 - Upgrades that reach their stack cap stop appearing in the choice pool.
 - There is no final floor or final win state.
 - The run ends only when time reaches 0.
+- The run-over screen shows floor reached, total deliveries, and chosen upgrades with stack counts.
 - Press `R` after a run ends to return to the start screen for a fresh Floor 1 run.
 - Total deliveries reset for each fresh run.
 - Chosen upgrades and their effects reset for each fresh run.
@@ -109,4 +110,5 @@ Manual smoke:
 - Confirm total deliveries and best floor update as floors advance.
 - Confirm fragile parcels appear more often on later floors but normal parcels still appear.
 - Let the timer expire and confirm the run-over state.
+- Confirm the run-over summary shows floor reached, total deliveries, and upgrades chosen.
 - Press `R` after run over and confirm the start screen returns with Floor 1.

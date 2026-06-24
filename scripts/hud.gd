@@ -55,6 +55,20 @@ func show_upgrade_choices(floor_number: int, next_floor: int, options: Array[Dic
 	message_label.text = "\n".join(lines)
 
 
+func show_run_summary(floor_number: int, total_deliveries: int, upgrades: Array[String]) -> void:
+	var lines: Array[String] = [
+		"Run ended",
+		"Floor reached: %d" % floor_number,
+		"Total deliveries: %d" % total_deliveries,
+	]
+	if upgrades.is_empty():
+		lines.append("Upgrades: none")
+	else:
+		lines.append("Upgrades: %s" % ", ".join(upgrades))
+	lines.append("Press R to start a fresh run.")
+	message_label.text = "\n".join(lines)
+
+
 func clear_message() -> void:
 	message_label.text = ""
 	event_label.text = ""

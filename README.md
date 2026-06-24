@@ -52,6 +52,7 @@ If the page is not live yet, open the repository settings on GitHub, go to Pages
 - Gentle Handling lowers fragile hazard penalties.
 - Lucky Satchel lowers normal hazard penalties.
 - Wide Glow increases pickup radius.
+- When the run ends, the summary shows floor reached, total deliveries, and chosen upgrades.
 - There is no final win state; the run continues until the timer reaches 0.
 - The first parcel is normal. Later parcels alternate between fragile and normal.
 - Fragile parcels are pink/yellow and use a matching carried-parcel indicator.
